@@ -1,36 +1,40 @@
 #include "utilies/visualization.h"
+
 namespace lvio_2d
 {
-    geometry_msgs::Point point_eigen_to_ros(const Eigen::Vector3d &p)
+    // 助手函数：转换到 ROS 2 消息类型
+    geometry_msgs::msg::Point point_eigen_to_ros(const Eigen::Vector3d &p)
     {
-        geometry_msgs::Point rp;
+        geometry_msgs::msg::Point rp;
         rp.x = p(0);
         rp.y = p(1);
         rp.z = p(2);
         return rp;
     }
-    geometry_msgs::Transform eigen_tf_to_ros_geometry(const Eigen::Isometry3d &tf)
+
+    geometry_msgs::msg::Transform eigen_tf_to_ros_geometry(const Eigen::Isometry3d &tf)
     {
-        geometry_msgs::Transform ros_geometry;
-        Eigen::Quaterniond q(tf.matrix().block<3, 3>(0, 0));
+        geometry_msgs::msg::Transform ros_geometry;
+        Eigen::Quaterniond q(tf.linear());
         ros_geometry.rotation.w = q.w();
         ros_geometry.rotation.x = q.x();
         ros_geometry.rotation.y = q.y();
         ros_geometry.rotation.z = q.z();
-
-        ros_geometry.translation.x = tf.matrix()(0, 3);
-        ros_geometry.translation.y = tf.matrix()(1, 3);
-        ros_geometry.translation.z = tf.matrix()(2, 3);
+        ros_geometry.translation.x = tf.translation().x();
+        ros_geometry.translation.y = tf.translation().y();
+        ros_geometry.translation.z = tf.translation().z();
         return ros_geometry;
     }
-    visualization::ptr visualization::get_ptr()
+
+    visualization::ptr visualization::get_ptr(rclcpp::Node::SharedPtr node)
     {
         static ptr ret = nullptr;
-        if (!ret)
-            ret = std::make_shared<visualization>();
+        if (!ret && node)
+            ret = std::make_shared<visualization>(node);
         return ret;
     }
-    int check_map_and_calc_index(const nav_msgs::OccupancyGrid &map, const Eigen::Vector3d &target)
+
+    int check_map_and_calc_index(const nav_msgs::msg::OccupancyGrid &map, const Eigen::Vector3d &target)
     {
         Eigen::Vector3d origin(0, 0, 0);
         origin(0) = map.info.origin.position.x;
@@ -47,7 +51,8 @@ namespace lvio_2d
             return -1;
         return y * w + x;
     }
-    void update_occupancy_grid(nav_msgs::OccupancyGrid &map, const Eigen::Vector3d &emit_origin,
+
+    void update_occupancy_grid(nav_msgs::msg::OccupancyGrid &map, const Eigen::Vector3d &emit_origin,
                                const Eigen::Vector3d &target)
     {
         double len = (target - emit_origin).norm();
@@ -73,15 +78,22 @@ namespace lvio_2d
             }
         }
     }
-    visualization::visualization() : it(nh), T_imu_to_camera(PARAM(T_imu_to_camera)),
-                                     T_imu_to_laser(PARAM(T_imu_to_laser)),
-                                     T_imu_to_wheel(PARAM(T_imu_to_wheel))
+
+    visualization::visualization(rclcpp::Node::SharedPtr node) 
+        : node_(node), 
+          T_imu_to_camera(PARAM(T_imu_to_camera)),
+          T_imu_to_laser(PARAM(T_imu_to_laser)),
+          T_imu_to_wheel(PARAM(T_imu_to_wheel))
     {
-        marker_pub = nh.advertise<visualization_msgs::Marker>("vis", 10);
-        map_pub = nh.advertise<nav_msgs::OccupancyGrid>("map", 10);
+        it_ = std::make_shared<image_transport::ImageTransport>(node_);
+        marker_pub = node_->create_publisher<visualization_msgs::msg::Marker>("vis", 10);
+        map_pub = node_->create_publisher<nav_msgs::msg::OccupancyGrid>("map", 10);
+        tf_br = std::make_unique<tf2_ros::TransformBroadcaster>(node_);
+        
         quit = false;
         visualization_thread = std::thread(std::bind(&visualization::do_visualization, this));
     }
+
     visualization::~visualization()
     {
         {
@@ -89,63 +101,51 @@ namespace lvio_2d
             quit = true;
             task_cv.notify_one();
         }
-        visualization_thread.join();
+        if (visualization_thread.joinable())
+            visualization_thread.join();
     }
 
     void visualization::do_image_show(const std::string &topic, const cv::Mat &src)
     {
-        auto iter = image_pubs.find(topic);
-        bool is_first = false;
-        if (iter == image_pubs.end())
+        if (image_pubs.find(topic) == image_pubs.end())
         {
-            is_first = true;
-            image_pubs[topic] = it.advertise(topic, 10);
+            image_pubs[topic] = it_->advertise(topic, 10);
         }
-        sensor_msgs::ImagePtr msg = cv_bridge::CvImage(std_msgs::Header(), "bgr8", src).toImageMsg();
-
-        if (is_first)
-        {
-            std::this_thread::sleep_for(std::chrono::milliseconds(1000));
-        }
-        image_pubs[topic].publish(msg);
+        
+        std_msgs::msg::Header header;
+        header.stamp = node_->now();
+        header.frame_id = "camera";
+        
+        auto msg = cv_bridge::CvImage(header, "bgr8", src).toImageMsg();
+        image_pubs[topic].publish(*msg);
     }
 
     void visualization::do_status_show(const Eigen::Isometry3d &tf, const TRAJECTORY_STATUS &status, const double &time)
     {
-        ros::Time ros_t = ros::Time().fromSec(time);
-        Eigen::Isometry3d imu_pose = tf;
+        rclcpp::Time ros_t = rclcpp::Time(static_cast<uint64_t>(time * 1e9));
+        
+        auto send_tf = [&](const std::string& parent, const std::string& child, const Eigen::Isometry3d& transform) {
+            geometry_msgs::msg::TransformStamped tf_msg;
+            tf_msg.header.stamp = ros_t;
+            tf_msg.header.frame_id = parent;
+            tf_msg.child_frame_id = child;
+            tf_msg.transform = eigen_tf_to_ros_geometry(transform);
+            tf_br->sendTransform(tf_msg);
+        };
 
-        geometry_msgs::TransformStamped tf_msg;
-        tf_msg.header.frame_id = "world";
-        tf_msg.header.stamp = ros_t;
+        send_tf("world", "imu", tf);
+        send_tf("imu", "camera", T_imu_to_camera);
+        send_tf("imu", "wheel", T_imu_to_wheel);
+        send_tf("imu", "laser", T_imu_to_laser);
 
-        tf_msg.child_frame_id = "imu";
-        tf_msg.transform = eigen_tf_to_ros_geometry(imu_pose);
-        tf_br.sendTransform(tf_msg);
-
-        tf_msg.header.frame_id = "imu";
-        tf_msg.child_frame_id = "camera";
-        tf_msg.transform = eigen_tf_to_ros_geometry(T_imu_to_camera);
-        tf_br.sendTransform(tf_msg);
-
-        tf_msg.header.frame_id = "imu";
-        tf_msg.child_frame_id = "wheel";
-        tf_msg.transform = eigen_tf_to_ros_geometry(T_imu_to_wheel);
-        tf_br.sendTransform(tf_msg);
-
-        tf_msg.header.frame_id = "imu";
-        tf_msg.child_frame_id = "laser";
-        tf_msg.transform = eigen_tf_to_ros_geometry(T_imu_to_laser);
-        tf_br.sendTransform(tf_msg);
-
-        visualization_msgs::Marker camera_marker;
+        visualization_msgs::msg::Marker camera_marker;
         camera_marker.header.frame_id = "camera";
         camera_marker.header.stamp = ros_t;
         camera_marker.ns = "lines";
-        camera_marker.action = visualization_msgs::Marker::ADD;
+        camera_marker.action = visualization_msgs::msg::Marker::ADD;
         camera_marker.pose.orientation.w = 1.0;
         camera_marker.id = 2;
-        camera_marker.type = visualization_msgs::Marker::LINE_LIST;
+        camera_marker.type = visualization_msgs::msg::Marker::LINE_LIST;
         camera_marker.scale.x = 0.01;
         camera_marker.scale.y = 0.01;
         camera_marker.color.a = 1.0;
@@ -155,9 +155,9 @@ namespace lvio_2d
             camera_marker.color.g = 1.0;
 
         // top
-        geometry_msgs::Point p0;
-        geometry_msgs::Point p1;
-        geometry_msgs::Point p2;
+        geometry_msgs::msg::Point p0;
+        geometry_msgs::msg::Point p1;
+        geometry_msgs::msg::Point p2;
         p1.x = -0.3;
         p1.y = -0.15;
         p1.z = 0.2;
@@ -169,7 +169,7 @@ namespace lvio_2d
         camera_marker.points.push_back(p2);
 
         // right
-        geometry_msgs::Point p3;
+        geometry_msgs::msg::Point p3;
         p3.x = 0.3;
         p3.y = 0.15;
         p3.z = 0.2;
@@ -177,7 +177,7 @@ namespace lvio_2d
         camera_marker.points.push_back(p3);
 
         // bottom
-        geometry_msgs::Point p4;
+        geometry_msgs::msg::Point p4;
         p4.x = -0.3;
         p4.y = 0.15;
         p4.z = 0.2;
@@ -188,9 +188,9 @@ namespace lvio_2d
         camera_marker.points.push_back(p4);
         camera_marker.points.push_back(p1);
 
-        geometry_msgs::Point p5;
-        geometry_msgs::Point p6;
-        geometry_msgs::Point p7;
+        geometry_msgs::msg::Point p5;
+        geometry_msgs::msg::Point p6;
+        geometry_msgs::msg::Point p7;
 
         p5.x = -0.25;
         p5.y = -0.15;
@@ -222,20 +222,21 @@ namespace lvio_2d
         camera_marker.points.push_back(p4);
         camera_marker.points.push_back(p0);
 
-        marker_pub.publish(camera_marker);
+        marker_pub->publish(camera_marker);
     }
 
     void visualization::do_scan_to_show(const scan::ptr &scan_ptr)
     {
+        rclcpp::Time ros_t = rclcpp::Time(static_cast<uint64_t>(scan_ptr->time * 1e9));
 
-        visualization_msgs::Marker lines_marker;
+        visualization_msgs::msg::Marker lines_marker;
         lines_marker.header.frame_id = "laser";
-        lines_marker.header.stamp = ros::Time().fromSec(scan_ptr->time);
+        lines_marker.header.stamp = ros_t;
         lines_marker.ns = "laser_lines";
-        lines_marker.action = visualization_msgs::Marker::ADD;
+        lines_marker.action = visualization_msgs::msg::Marker::ADD;
         lines_marker.pose.orientation.w = 1.0;
         lines_marker.id = 2;
-        lines_marker.type = visualization_msgs::Marker::LINE_LIST;
+        lines_marker.type = visualization_msgs::msg::Marker::LINE_LIST;
         lines_marker.scale.x = 0.15;
         lines_marker.scale.y = 0.15;
         lines_marker.scale.z = 0.03;
@@ -243,83 +244,75 @@ namespace lvio_2d
         lines_marker.color.r = 1.0;
         lines_marker.color.b = 1.0;
 
-        visualization_msgs::Marker concer_marker;
+        visualization_msgs::msg::Marker concer_marker;
         concer_marker.header.frame_id = "laser";
-        concer_marker.header.stamp = ros::Time().fromSec(scan_ptr->time);
+        concer_marker.header.stamp = ros_t;
         concer_marker.ns = "laser_concer";
-        concer_marker.action = visualization_msgs::Marker::ADD;
+        concer_marker.action = visualization_msgs::msg::Marker::ADD;
         concer_marker.pose.orientation.w = 1.0;
         concer_marker.id = 2;
-        concer_marker.type = visualization_msgs::Marker::POINTS;
+        concer_marker.type = visualization_msgs::msg::Marker::POINTS;
         concer_marker.scale.x = 0.15;
         concer_marker.scale.y = 0.15;
         concer_marker.scale.z = 0.15;
         concer_marker.color.a = 1.0;
         concer_marker.color.r = 1.0;
 
-        int w = scan_ptr->w;
-        int h = scan_ptr->h;
-
         for (int i = 0; i < scan_ptr->concers.size(); i++)
         {
-            concer_marker.points.push_back(point_eigen_to_ros(
-                scan_ptr->concers[i]));
+            concer_marker.points.push_back(point_eigen_to_ros(scan_ptr->concers[i]));
         }
 
         for (int i = 0; i < scan_ptr->lines.size(); i++)
         {
-            lines_marker.points.push_back(point_eigen_to_ros(
-                scan_ptr->lines[i]->p1));
-            lines_marker.points.push_back(point_eigen_to_ros(
-                scan_ptr->lines[i]->p2));
+            lines_marker.points.push_back(point_eigen_to_ros(scan_ptr->lines[i]->p1));
+            lines_marker.points.push_back(point_eigen_to_ros(scan_ptr->lines[i]->p2));
         }
 
-        visualization_msgs::Marker points_marker;
+        visualization_msgs::msg::Marker points_marker;
         points_marker.header.frame_id = "laser";
-        points_marker.header.stamp = ros::Time().fromSec(scan_ptr->time);
+        points_marker.header.stamp = ros_t;
         points_marker.ns = "laser_points";
-        points_marker.action = visualization_msgs::Marker::ADD;
+        points_marker.action = visualization_msgs::msg::Marker::ADD;
         points_marker.pose.orientation.w = 1.0;
         points_marker.id = 2;
-        points_marker.type = visualization_msgs::Marker::POINTS;
+        points_marker.type = visualization_msgs::msg::Marker::POINTS;
         points_marker.scale.x = 0.01;
         points_marker.scale.y = 0.01;
         points_marker.scale.z = 0.01;
         points_marker.color.a = 0.5;
         points_marker.color.b = 1.0;
         points_marker.color.g = 1.0;
+        
         for (int i = 0; i < scan_ptr->points.size(); i++)
         {
             points_marker.points.push_back(point_eigen_to_ros(scan_ptr->points[i]));
         }
-        marker_pub.publish(points_marker);
-        marker_pub.publish(concer_marker);
-        marker_pub.publish(lines_marker);
+        marker_pub->publish(points_marker);
+        marker_pub->publish(concer_marker);
+        marker_pub->publish(lines_marker);
     }
+
     void visualization::do_path_show(const std::string &topic, const std::vector<Eigen::Isometry3d> &path)
     {
-        auto iter = path_pubs.find(topic);
-        bool is_first = false;
-        if (iter == path_pubs.end())
+        if (path_pubs.find(topic) == path_pubs.end())
         {
-            is_first = true;
-            path_pubs[topic] = nh.advertise<nav_msgs::Path>(topic, 10);
+            path_pubs[topic] = node_->create_publisher<nav_msgs::msg::Path>(topic, 10);
         }
-        if (is_first)
-        {
-            std::this_thread::sleep_for(std::chrono::milliseconds(1000));
-        }
-        nav_msgs::Path msg;
+        
+        nav_msgs::msg::Path msg;
         msg.header.frame_id = "world";
-        msg.header.stamp = ros::Time::now();
+        msg.header.stamp = node_->now();
+        
         for (int i = 0; i < path.size(); i++)
         {
-            geometry_msgs::PoseStamped posestamp;
-            Eigen::Quaterniond q(path[i].matrix().block<3, 3>(0, 0));
+            geometry_msgs::msg::PoseStamped posestamp;
+            posestamp.header = msg.header;
+            Eigen::Quaterniond q(path[i].linear());
 
-            posestamp.pose.position.x = path[i].matrix()(0, 3);
-            posestamp.pose.position.y = path[i].matrix()(1, 3);
-            posestamp.pose.position.z = path[i].matrix()(2, 3);
+            posestamp.pose.position.x = path[i].translation().x();
+            posestamp.pose.position.y = path[i].translation().y();
+            posestamp.pose.position.z = path[i].translation().z();
 
             posestamp.pose.orientation.w = q.w();
             posestamp.pose.orientation.x = q.x();
@@ -328,34 +321,30 @@ namespace lvio_2d
 
             msg.poses.push_back(posestamp);
         }
-        path_pubs[topic].publish(msg);
+        path_pubs[topic]->publish(msg);
     }
+
     void visualization::do_odom_to_show(const std::string &topic, const Eigen::Isometry3d &pose, const Eigen::Vector3d &linear, const Eigen::Vector3d &angular)
     {
-        auto iter = odom_pubs.find(topic);
-        bool is_first = false;
-        if (iter == odom_pubs.end())
+        if (odom_pubs.find(topic) == odom_pubs.end())
         {
-            is_first = true;
-            odom_pubs[topic] = nh.advertise<nav_msgs::Odometry>(topic, 10);
-        }
-        if (is_first)
-        {
+            odom_pubs[topic] = node_->create_publisher<nav_msgs::msg::Odometry>(topic, 10);
             std::this_thread::sleep_for(std::chrono::milliseconds(1000));
         }
-        nav_msgs::Odometry msg;
+        
+        nav_msgs::msg::Odometry msg;
         msg.header.frame_id = "world";
-        msg.header.stamp = ros::Time::now();
-        Eigen::Quaterniond q(pose.matrix().block<3, 3>(0, 0));
+        msg.header.stamp = node_->now();
+        Eigen::Quaterniond q(pose.linear());
 
         msg.pose.pose.orientation.w = q.w();
         msg.pose.pose.orientation.x = q.x();
         msg.pose.pose.orientation.y = q.y();
         msg.pose.pose.orientation.z = q.z();
 
-        msg.pose.pose.position.x = pose.matrix()(0, 3);
-        msg.pose.pose.position.y = pose.matrix()(1, 3);
-        msg.pose.pose.position.z = pose.matrix()(2, 3);
+        msg.pose.pose.position.x = pose.translation().x();
+        msg.pose.pose.position.y = pose.translation().y();
+        msg.pose.pose.position.z = pose.translation().z();
 
         msg.twist.twist.angular.x = angular(0);
         msg.twist.twist.angular.y = angular(1);
@@ -364,19 +353,20 @@ namespace lvio_2d
         msg.twist.twist.linear.x = linear(0);
         msg.twist.twist.linear.y = linear(1);
         msg.twist.twist.linear.z = linear(2);
-        odom_pubs[topic].publish(msg);
+        
+        odom_pubs[topic]->publish(msg);
     }
+
     void visualization::do_laser_map_to_show(const laser_map::ptr &laser_map_ptr)
     {
-
-        visualization_msgs::Marker points_marker;
+        visualization_msgs::msg::Marker points_marker;
         points_marker.header.frame_id = "world";
-        points_marker.header.stamp = ros::Time::now();
+        points_marker.header.stamp = node_->now();
         points_marker.ns = "laser_map";
-        points_marker.action = visualization_msgs::Marker::ADD;
+        points_marker.action = visualization_msgs::msg::Marker::ADD;
         points_marker.pose.orientation.w = 1.0;
         points_marker.id = 2;
-        points_marker.type = visualization_msgs::Marker::POINTS;
+        points_marker.type = visualization_msgs::msg::Marker::POINTS;
         points_marker.scale.x = 0.02;
         points_marker.scale.y = 0.02;
         points_marker.color.a = 1.0;
@@ -387,34 +377,28 @@ namespace lvio_2d
         double max_x = TIME_MIN, max_y = TIME_MIN;
         double min_x = TIME_MAX, min_y = TIME_MAX;
         double map_res = 0.05;
+        
         for (int i = 0; i < laser_map_ptr->submaps.size(); i++)
         {
             Eigen::Isometry3d T_w_l = lie::make_tf(laser_map_ptr->submaps[i]->current_p, laser_map_ptr->submaps[i]->current_q) *
                                       PARAM(T_imu_to_laser);
             for (int j = 0; j < laser_map_ptr->submaps[i]->scan_ptr->points.size(); j++)
             {
-                Eigen::Vector3d p = T_w_l *
-                                    laser_map_ptr->submaps[i]->scan_ptr->points[j];
+                Eigen::Vector3d p = T_w_l * laser_map_ptr->submaps[i]->scan_ptr->points[j];
                 points_marker.points.push_back(point_eigen_to_ros(p));
-                if (p(0) > max_x)
-                    max_x = p(0);
-                if (p(0) < min_x)
-                    min_x = p(0);
-                if (p(1) > max_y)
-                    max_y = p(1);
-                if (p(1) < min_y)
-                    min_y = p(1);
+                if (p(0) > max_x) max_x = p(0);
+                if (p(0) < min_x) min_x = p(0);
+                if (p(1) > max_y) max_y = p(1);
+                if (p(1) < min_y) min_y = p(1);
             }
         }
-
-        Eigen::Vector3d origin((max_x + min_x) / 2, (max_y + min_y) / 2, 0);
 
         int w = (max_x - min_x) / map_res + 1;
         int h = (max_y - min_y) / map_res + 1;
 
-        nav_msgs::OccupancyGrid map;
+        nav_msgs::msg::OccupancyGrid map;
         map.header.frame_id = "world";
-        map.header.stamp = ros::Time::now();
+        map.header.stamp = node_->now();
         map.info.origin.position.x = min_x;
         map.info.origin.position.y = min_y;
         map.info.origin.position.z = 0;
@@ -427,39 +411,34 @@ namespace lvio_2d
         map.info.width = w;
         map.info.height = h;
         map.info.resolution = map_res;
-        map.data.resize(w * h);
-        for (int i = 0; i < w * h; i++)
-        {
-            map.data[i] = -1;
-        }
+        map.data.resize(w * h, -1);
 
         for (int i = 0; i < laser_map_ptr->submaps.size(); i++)
         {
             Eigen::Isometry3d T_w_l = lie::make_tf(laser_map_ptr->submaps[i]->current_p, laser_map_ptr->submaps[i]->current_q) *
                                       PARAM(T_imu_to_laser);
+            Eigen::Vector3d emit_origin = T_w_l.translation();
             for (int j = 0; j < laser_map_ptr->submaps[i]->scan_ptr->points.size(); j++)
             {
-                Eigen::Vector3d p = T_w_l *
-                                    laser_map_ptr->submaps[i]->scan_ptr->points[j];
-                Eigen::Vector3d emit_origin = T_w_l.matrix().block<3, 1>(0, 3);
+                Eigen::Vector3d p = T_w_l * laser_map_ptr->submaps[i]->scan_ptr->points[j];
                 update_occupancy_grid(map, emit_origin, p);
             }
         }
 
-        map_pub.publish(map);
-        marker_pub.publish(points_marker);
+        map_pub->publish(map);
+        marker_pub->publish(points_marker);
     }
 
     void visualization::do_feature_map_to_show(const feature_map::ptr &feature_map_ptr)
     {
-        visualization_msgs::Marker frozen_points_marker;
+        visualization_msgs::msg::Marker frozen_points_marker;
         frozen_points_marker.header.frame_id = "world";
-        frozen_points_marker.header.stamp = ros::Time::now();
+        frozen_points_marker.header.stamp = node_->now();
         frozen_points_marker.ns = "feature_map_frozen";
-        frozen_points_marker.action = visualization_msgs::Marker::ADD;
+        frozen_points_marker.action = visualization_msgs::msg::Marker::ADD;
         frozen_points_marker.pose.orientation.w = 1.0;
         frozen_points_marker.id = 2;
-        frozen_points_marker.type = visualization_msgs::Marker::POINTS;
+        frozen_points_marker.type = visualization_msgs::msg::Marker::POINTS;
         frozen_points_marker.scale.x = 0.03;
         frozen_points_marker.scale.y = 0.03;
         frozen_points_marker.scale.z = 0.03;
@@ -468,14 +447,14 @@ namespace lvio_2d
         frozen_points_marker.color.g = 0.0;
         frozen_points_marker.color.r = 0.0;
 
-        visualization_msgs::Marker opting_points_marker;
+        visualization_msgs::msg::Marker opting_points_marker;
         opting_points_marker.header.frame_id = "world";
-        opting_points_marker.header.stamp = ros::Time::now();
+        opting_points_marker.header.stamp = node_->now();
         opting_points_marker.ns = "feature_map_opting";
-        opting_points_marker.action = visualization_msgs::Marker::ADD;
+        opting_points_marker.action = visualization_msgs::msg::Marker::ADD;
         opting_points_marker.pose.orientation.w = 1.0;
         opting_points_marker.id = 2;
-        opting_points_marker.type = visualization_msgs::Marker::POINTS;
+        opting_points_marker.type = visualization_msgs::msg::Marker::POINTS;
         opting_points_marker.scale.x = 0.03;
         opting_points_marker.scale.y = 0.03;
         opting_points_marker.scale.z = 0.03;
@@ -496,36 +475,34 @@ namespace lvio_2d
             }
         }
 
-        marker_pub.publish(frozen_points_marker);
-        marker_pub.publish(opting_points_marker);
+        marker_pub->publish(frozen_points_marker);
+        marker_pub->publish(opting_points_marker);
     }
+
     void visualization::do_laser_match_to_show(const laser_match::ptr &laser_match_ptr)
     {
-        visualization_msgs::Marker lines_marker1;
-
+        visualization_msgs::msg::Marker lines_marker1;
         lines_marker1.header.frame_id = "world";
-        lines_marker1.header.stamp = ros::Time().now();
+        lines_marker1.header.stamp = node_->now();
         lines_marker1.ns = "match_line1";
-        lines_marker1.action = visualization_msgs::Marker::ADD;
+        lines_marker1.action = visualization_msgs::msg::Marker::ADD;
         lines_marker1.pose.orientation.w = 1.0;
         lines_marker1.id = 2;
-        lines_marker1.type = visualization_msgs::Marker::LINE_LIST;
+        lines_marker1.type = visualization_msgs::msg::Marker::LINE_LIST;
         lines_marker1.scale.x = 0.06;
         lines_marker1.scale.y = 0.06;
         lines_marker1.scale.z = 0.06;
         lines_marker1.color.a = 0.5;
-
         lines_marker1.color.r = 1.0;
 
-        visualization_msgs::Marker lines_marker2;
-
+        visualization_msgs::msg::Marker lines_marker2;
         lines_marker2.header.frame_id = "world";
-        lines_marker2.header.stamp = ros::Time().now();
+        lines_marker2.header.stamp = node_->now();
         lines_marker2.ns = "match_line2";
-        lines_marker2.action = visualization_msgs::Marker::ADD;
+        lines_marker2.action = visualization_msgs::msg::Marker::ADD;
         lines_marker2.pose.orientation.w = 1.0;
         lines_marker2.id = 2;
-        lines_marker2.type = visualization_msgs::Marker::LINE_LIST;
+        lines_marker2.type = visualization_msgs::msg::Marker::LINE_LIST;
         lines_marker2.scale.x = 0.03;
         lines_marker2.scale.y = 0.03;
         lines_marker2.scale.z = 0.03;
@@ -539,24 +516,21 @@ namespace lvio_2d
 
             for (int i = 0; i < laser_match_ptr->lines1.size(); i++)
             {
-                lines_marker1.points.push_back(point_eigen_to_ros(
-                    T_w_l1 * laser_match_ptr->lines1[i]->p1));
-                lines_marker1.points.push_back(point_eigen_to_ros(
-                    T_w_l1 * laser_match_ptr->lines1[i]->p2));
+                lines_marker1.points.push_back(point_eigen_to_ros(T_w_l1 * laser_match_ptr->lines1[i]->p1));
+                lines_marker1.points.push_back(point_eigen_to_ros(T_w_l1 * laser_match_ptr->lines1[i]->p2));
 
-                lines_marker2.points.push_back(point_eigen_to_ros(
-                    T_w_l2 * laser_match_ptr->lines2[i]->p1));
-                lines_marker2.points.push_back(point_eigen_to_ros(
-                    T_w_l2 * laser_match_ptr->lines2[i]->p2));
+                lines_marker2.points.push_back(point_eigen_to_ros(T_w_l2 * laser_match_ptr->lines2[i]->p1));
+                lines_marker2.points.push_back(point_eigen_to_ros(T_w_l2 * laser_match_ptr->lines2[i]->p2));
             }
         }
 
-        marker_pub.publish(lines_marker1);
-        marker_pub.publish(lines_marker2);
+        marker_pub->publish(lines_marker1);
+        marker_pub->publish(lines_marker2);
     }
+
     void visualization::do_visualization()
     {
-        while (1)
+        while (rclcpp::ok())
         {
             std::string im_topic;
             cv::Mat im_src;

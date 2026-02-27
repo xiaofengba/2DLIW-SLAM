@@ -1,0 +1,39 @@
+[35m[1mConsolidate compiler generated dependencies of target utilies[0m
+[35m[1mConsolidate compiler generated dependencies of target trajectory[0m
+[ 33%] Built target utilies
+[ 83%] Built target trajectory
+[35m[1mConsolidate compiler generated dependencies of target lvio_2d_node[0m
+[100%] Built target lvio_2d_node
+-- Install configuration: ""
+-- Up-to-date: /home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/install/lvio_2d/lib/lvio_2d/lvio_2d_node
+-- Up-to-date: /home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/install/lvio_2d/lib/lvio_2d/libutilies.so
+-- Up-to-date: /home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/install/lvio_2d/lib/lvio_2d/libtrajectory.so
+-- Up-to-date: /home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/install/lvio_2d/share/lvio_2d/launch
+-- Up-to-date: /home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/install/lvio_2d/share/lvio_2d/launch/lvio_2d.launch.py
+-- Up-to-date: /home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/install/lvio_2d/share/lvio_2d/launch/lvio_2d_office.launch
+-- Up-to-date: /home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/install/lvio_2d/share/lvio_2d/launch/lvio_2d_market.launch
+-- Up-to-date: /home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/install/lvio_2d/share/lvio_2d/launch/lvio_2d.launch
+-- Up-to-date: /home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/install/lvio_2d/share/lvio_2d/launch/lvio_2d_cafe.launch
+-- Up-to-date: /home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/install/lvio_2d/share/lvio_2d/launch/lvio_2d_corridor.launch
+-- Up-to-date: /home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/install/lvio_2d/share/lvio_2d/launch/display.rviz
+-- Up-to-date: /home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/install/lvio_2d/share/lvio_2d/config
+-- Up-to-date: /home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/install/lvio_2d/share/lvio_2d/config/office.yaml
+-- Up-to-date: /home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/install/lvio_2d/share/lvio_2d/config/cafe.yaml
+-- Up-to-date: /home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/install/lvio_2d/share/lvio_2d/config/corridor.yaml
+-- Up-to-date: /home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/install/lvio_2d/share/lvio_2d/config/params.yaml
+-- Up-to-date: /home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/install/lvio_2d/share/lvio_2d/config/ros2_params.yaml
+-- Up-to-date: /home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/install/lvio_2d/share/ament_index/resource_index/package_run_dependencies/lvio_2d
+-- Up-to-date: /home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/install/lvio_2d/share/ament_index/resource_index/parent_prefix_path/lvio_2d
+-- Up-to-date: /home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/install/lvio_2d/share/lvio_2d/environment/ament_prefix_path.sh
+-- Up-to-date: /home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/install/lvio_2d/share/lvio_2d/environment/ament_prefix_path.dsv
+-- Up-to-date: /home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/install/lvio_2d/share/lvio_2d/environment/path.sh
+-- Up-to-date: /home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/install/lvio_2d/share/lvio_2d/environment/path.dsv
+-- Up-to-date: /home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/install/lvio_2d/share/lvio_2d/local_setup.bash
+-- Up-to-date: /home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/install/lvio_2d/share/lvio_2d/local_setup.sh
+-- Up-to-date: /home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/install/lvio_2d/share/lvio_2d/local_setup.zsh
+-- Up-to-date: /home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/install/lvio_2d/share/lvio_2d/local_setup.dsv
+-- Installing: /home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/install/lvio_2d/share/lvio_2d/package.dsv
+-- Up-to-date: /home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/install/lvio_2d/share/ament_index/resource_index/packages/lvio_2d
+-- Up-to-date: /home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/install/lvio_2d/share/lvio_2d/cmake/lvio_2dConfig.cmake
+-- Up-to-date: /home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/install/lvio_2d/share/lvio_2d/cmake/lvio_2dConfig-version.cmake
+-- Up-to-date: /home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/install/lvio_2d/share/lvio_2d/package.xml

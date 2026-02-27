@@ -5,6 +5,8 @@
 #include "factor/point_factor.h"
 #include "trajectory/laser_manager.h"
 #include <opencv2/opencv.hpp>
+#include <rclcpp/rclcpp.hpp> // 【新增】引入 ROS 2 核心库
+
 static lvio_2d::record *recorder;
 static inline int CountOnes(uint64_t n)
 {
@@ -153,10 +155,6 @@ namespace lvio_2d
         origin /= -total_size;
         origin(2) = 0;
 
-        // origin(0) = -(min_x + max_x) / 2;
-        // origin(1) = -(min_y + max_y) / 2;
-        // origin(2) = 0;
-
         scalar = std::min<double>(w / (max_x - min_x), h / (max_y - min_y));
 
         for (int i = 0; i < m1->scans.size(); i++)
@@ -191,8 +189,6 @@ namespace lvio_2d
         }
 
         visualization::get_ptr()->add_image_to_show("merge", board);
-        // cv::imshow("merge", board);
-        // cv::waitKey(1);
     }
     static void show_matches(laser_map_feature::ptr m1, laser_map_feature::ptr m2, laser_match_point::ptr loop)
     {
@@ -238,9 +234,6 @@ namespace lvio_2d
         origin1 /= total_size1;
         origin1 = -origin1;
         origin1(2) = 0;
-        // origin1(0) = -(min_x1 + max_x1) / 2;
-        // origin1(1) = -(min_y1 + max_y1) / 2;
-        // origin1(2) = 0;
 
         scalar1 = std::min<double>(w / (max_x1 - min_x1), h / (max_y1 - min_y1));
 
@@ -272,9 +265,6 @@ namespace lvio_2d
         origin2 = -origin2;
 
         origin2(2) = 0;
-        // origin2(0) = -(min_x2 + max_x2) / 2;
-        // origin2(1) = -(min_y2 + max_y2) / 2;
-        // origin2(2) = 0;
 
         scalar2 = std::min<double>(w / (max_x2 - min_x2), h / (max_y2 - min_y2));
 
@@ -332,9 +322,6 @@ namespace lvio_2d
                     cv::FONT_HERSHEY_SIMPLEX, 0.8, cv::Scalar(0, 255, 0), 1, 8);
 
         visualization::get_ptr()->add_image_to_show("matches", board);
-
-        // cv::imshow("matches", board);
-        // cv::waitKey(1);
     }
 } // namespace lvio_2d
 
@@ -345,16 +332,16 @@ namespace lvio_2d
     {
         recorder = new record;
         recorder->set_filename("keyframe");
-        // cv::namedWindow("matches");
-        // cv::namedWindow("merge");
-        // cv::namedWindow("merge");
 
         cv::waitKey(1);
         laser_frame_count = 0;
         last_loop_index = -1000;
         modify_delta_tf = Eigen::Isometry3d::Identity();
-        last_show_time = ros::WallTime::now().toSec();
-        last_solve_time = ros::WallTime::now().toSec();
+        
+        // 【修改】替换为 rclcpp 的系统时钟获取秒数
+        last_show_time = rclcpp::Clock().now().seconds();
+        last_solve_time = rclcpp::Clock().now().seconds();
+        
         has_loop_wait_for_solve = false;
         backend_thread = std::thread(std::bind(&keyframe_manager::main_loop, this));
         show_thread = std::thread(std::bind(&keyframe_manager::show_loop, this));
@@ -461,7 +448,9 @@ namespace lvio_2d
 
         if (is_time_to_solve())
         {
-            last_solve_time = ros::WallTime::now().toSec();
+            // 【修改】替换为 rclcpp 的系统时钟获取秒数
+            last_solve_time = rclcpp::Clock().now().seconds();
+            
             recorder->begin_record();
             solve();
             recorder->end_record("solve");
@@ -471,18 +460,13 @@ namespace lvio_2d
                 std::unique_lock<std::mutex> lc(mu);
                 modify_delta_tf = delta_tf;
             }
-            // show_laser_map();
             has_loop_wait_for_solve = false;
         }
-        // if (is_time_to_show())
-        // {
-
-        //     show_laser_map();
-        // }
     }
     void keyframe_manager::show_laser_map()
     {
-        last_show_time = ros::WallTime::now().toSec();
+        // 【修改】替换为 rclcpp 的系统时钟获取秒数
+        last_show_time = rclcpp::Clock().now().seconds();
 
         std::vector<Eigen::Isometry3d> path;
         for (int i = 0; i < keyframe_queue.size(); i++)
@@ -492,7 +476,6 @@ namespace lvio_2d
 
         visualization::get_ptr()->add_path_to_show("backen_path", path);
 
-        // std::unique_lock<std::mutex> lc(mu);
         if (keyframe_queue.empty())
             return;
         laser_map::ptr laser_map_ptr(new laser_map);
@@ -645,11 +628,7 @@ namespace lvio_2d
             return nullptr;
         if (!laser_map_features.back())
             return nullptr;
-        // if (int(laser_map_features.size()) - last_loop_index < 10)
-        // {
-        //     return nullptr;
-        // }
-        // lmicroTimer("laser_loop_detect");
+        
         laser_match_point::ptr laser_loop_match = nullptr;
         for (int i = 0; i < laser_map_features.size() - PARAM(loop_detect_min_interval); i += (PARAM(submap_count) / 3 + 1))
         {
@@ -666,7 +645,6 @@ namespace lvio_2d
                 laser_loop_match->scan1 = laser_map_features.back()->scans.front();
                 laser_loop_match->scan2 = laser_map_features[i]->scans.front();
 
-                //  P1A=P1B=T12 P2B
                 std::vector<Eigen::Vector3d> P1As;
                 std::vector<Eigen::Vector3d> P2Bs;
                 Eigen::Isometry3d tf_inv1 = (laser_loop_match->tf1 * PARAM(T_imu_to_wheel)).inverse();
@@ -685,9 +663,7 @@ namespace lvio_2d
                 w_T12 = ICP_solve_by_opt(P1As, P2Bs, Eigen::Isometry3d::Identity());
                 recorder->end_record("ICP_solve_by_opt");
 
-                // recorder->begin_record();
                 show_matches_merge(laser_map_features.back(), laser_map_features[i], w_T12);
-                // recorder->end_record("show_matches_merge");
                 Eigen::Isometry3d i_t12 = PARAM(T_imu_to_wheel) * w_T12 * PARAM(T_imu_to_wheel).inverse();
                 Eigen::Isometry3d tracking_i_t12 = laser_loop_match->tf1.inverse() * laser_loop_match->tf2;
 
@@ -722,7 +698,6 @@ namespace lvio_2d
     void keyframe_manager::solve()
     {
         int max_loop_times = 2;
-        // get_init();
         ceres::LossFunction *loss_function = nullptr;
         ceres::LocalParameterization *so3_parameterization =
             factor::so3_parameterization::Create();
@@ -735,7 +710,6 @@ namespace lvio_2d
             int index2 = seq_edges[i]->index2;
             auto [dp, dq] = lie::log_SE3(seq_edges[i]->tf12);
 
-            // ceres::CostFunction *edge_cost_function = edge_factor::Create(seq_edges[i]->tf12, dp.norm() / PARAM(key_frame_p_motion_threshold));
             ceres::CostFunction *edge_cost_function = edge_factor::Create(seq_edges[i]->tf12, 1);
 
             problem.AddResidualBlock(
@@ -751,25 +725,6 @@ namespace lvio_2d
                 problem.SetParameterBlockConstant(keyframe_queue[index1]->p.data());
             }
         }
-
-        // prior factor
-        // for (int i = 0; i < keyframe_queue.size(); i++)
-        // {
-
-        //     ceres::CostFunction *prior_cost_function = prior_factor::Create(keyframe_queue[i]->p,
-        //                                                                     keyframe_queue[i]->q,
-        //                                                                     keyframe_queue[i]->sqrt_H);
-        //     problem.AddResidualBlock(
-        //         prior_cost_function, loss_function,
-        //         keyframe_queue[i]->p.data(), keyframe_queue[i]->q.data());
-
-        //     problem.SetParameterization(keyframe_queue[i]->q.data(), so3_parameterization);
-        //     if (i == 0)
-        //     {
-        //         problem.SetParameterBlockConstant(keyframe_queue[i]->p.data());
-        //         problem.SetParameterBlockConstant(keyframe_queue[i]->q.data());
-        //     }
-        // }
 
         // loop
         for (int i = 0; i < loop_edges.size(); i++)
@@ -813,32 +768,14 @@ namespace lvio_2d
         options.linear_solver_type = ceres::SPARSE_SCHUR;
         options.use_nonmonotonic_steps = false;
         options.minimizer_progress_to_stdout = false;
-        // options.max_num_iterations = 10;
         ceres::Solver::Summary summary;
 
         ceres::Solve(options, &problem, &summary);
-        // for (int i = 0; i < loop_edges.size(); i++)
-        // {
-        //     int index1 = loop_edges[i]->index1;
-        //     int index2 = loop_edges[i]->index2; // begin
-        //     for (int j = index2 + 1; j <= index1; j++)
-        //     {
-        //         if (seq_edges[j - 1]->times < max_loop_times)
-        //         {
-        //             seq_edges[j - 1]->tf12 = lie::make_tf(
-        //                                          keyframe_queue[j - 1]->p, keyframe_queue[j - 1]->q)
-        //                                          .inverse() *
-        //                                      lie::make_tf(
-        //                                          keyframe_queue[j]->p, keyframe_queue[j]->q);
-        //             seq_edges[j - 1]->times++;
-        //         }
-        //     }
-        // }
-        // loop_edges.clear();
     }
     bool keyframe_manager::is_time_to_solve()
     {
-        double time_now = ros::WallTime::now().toSec();
+        // 【修改】替换为 rclcpp 的系统时钟获取秒数
+        double time_now = rclcpp::Clock().now().seconds();
 
         if (has_loop_wait_for_solve && time_now - last_solve_time > 10)
         {
@@ -848,7 +785,9 @@ namespace lvio_2d
     }
     bool keyframe_manager::is_time_to_show()
     {
-        double time_now = ros::WallTime::now().toSec();
+        // 【修改】替换为 rclcpp 的系统时钟获取秒数
+        double time_now = rclcpp::Clock().now().seconds();
+        
         if (time_now - last_show_time > 5)
         {
             return true;
@@ -875,8 +814,6 @@ namespace lvio_2d
             if (quit)
                 break;
             do_add_keyframe(tmp);
-            if (!cache_keyframes.empty())
-                ; // std::cout << "cache_keyframes size:" << cache_keyframes.size() << std::endl;
         }
     }
 
@@ -897,7 +834,6 @@ namespace lvio_2d
 
     laser_map_feature::ptr keyframe_manager::spawn_laser_map_feature()
     {
-        // std::cout << "spawn_laser_map_feature" << std::endl;
         std::vector<scan::ptr> scans_;
         std::vector<Eigen::Isometry3d> tfs_;
         std::vector<std::vector<Eigen::Vector3d>> concers_;
@@ -948,8 +884,6 @@ namespace lvio_2d
                                          const long long &index_,
                                          const Eigen::Isometry3d &origin_)
     {
-        // std::cout << "laser_map_feature" << std::endl;
-        // collect points
         index = index_;
         origin = origin_;
         for (int i = 0; i < concers_.size(); i++)
@@ -975,7 +909,6 @@ namespace lvio_2d
                 if (!has_duplicate_points)
                 {
                     points.push_back(concers_[i][j]);
-                    // std::cout << points.back().transpose() << std::endl;
                 }
             }
         }
@@ -1015,19 +948,6 @@ namespace lvio_2d
             }
             dess.push_back(tmp_des_i);
         }
-
-        // check
-        // std::cout << "n_points:" << n_points << std::endl;
-        // for (int i = 0; i < n_points; i++)
-        // {
-        //     std::cout << "\tdes_i:" << i << std::endl;
-        //     for (int j = 0; j < dess[i].des_ij.size(); j++)
-        //     {
-        //         std::cout << "\t\t[" << dess[i].des_ij[j].dij << " , "
-        //                   << dess[i].des_ij[j].aij << " , "
-        //                   << dess[i].des_ij[j].j << "]" << std::endl;
-        //     }
-        // }
     }
 
     // 论文算法3
@@ -1168,16 +1088,6 @@ namespace lvio_2d
             }
             show_matches(m1, m2, ret);
         }
-        // check
-        // if (best_match_size > PARAM(laser_loop_min_match_threshold))
-        // {
-        //     std::cout << "find loop" << std::endl;
-        //     std::cout << "size:" << best_match_size << std::endl;
-        //     for (int i = 0; i < ret->p1.size(); i++)
-        //     {
-        //         std::cout << ret->p1[i].transpose() << " --> " << ret->p2[i].transpose() << std::endl;
-        //     }
-        // }
 
         return ret;
     }

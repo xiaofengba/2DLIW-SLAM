@@ -1,5 +1,5 @@
 #pragma once
-#include "ros/ros.h"
+#include <rclcpp/rclcpp.hpp> // 【修改】替换 ros/ros.h
 #include "trajectory/sensor.h"
 #include "trajectory/trajectory.h"
 #include "utilies/common.h"
@@ -9,6 +9,13 @@
 #include <queue>
 #include <thread>
 #include <unordered_map>
+
+// 【新增】包含 ROS 2 消息头文件以防万一
+#include <sensor_msgs/msg/laser_scan.hpp>
+#include <sensor_msgs/msg/imu.hpp>
+#include <nav_msgs/msg/odometry.hpp>
+#include <sensor_msgs/msg/image.hpp>
+
 namespace lvio_2d
 {
     inline const std::string CAMERA = "camera";
@@ -51,8 +58,9 @@ namespace lvio_2d
     template <typename sensor_type, typename T>
     std::unique_ptr<dispatchable_sensor_data<sensor_type>> create_dispatchable_data(const T &msg)
     {
+        // 【修改】ROS 2 时间戳处理机制
         return std::unique_ptr<dispatchable_sensor_data<sensor_type>>(
-            new dispatchable_sensor_data<sensor_type>(msg->header.stamp.toSec(),
+            new dispatchable_sensor_data<sensor_type>(rclcpp::Time(msg->header.stamp).seconds(),
                                                       std::unique_ptr<sensor_type>(new sensor_type(msg))));
     }
 
@@ -103,18 +111,20 @@ namespace lvio_2d
             quit = false;
             dispatch_thread = std::thread(std::bind(&dispatch_queue::dispatch, this));
         };
-        void add_laser_msg(const sensor_msgs::LaserScan::ConstPtr &msg)
+        
+        // 【修改】消息类型改为 msg::LaserScan::ConstSharedPtr
+        void add_laser_msg(const sensor_msgs::msg::LaserScan::ConstSharedPtr &msg)
         {
             std::unique_lock<std::mutex> lock(dispatch_mutex);
-            double time = msg->header.stamp.toSec();
+            double time = rclcpp::Time(msg->header.stamp).seconds(); // 【修改】时间戳
             if (last_dispatch_time >= time)
             {
-                // ROS_WARN("old laser msg.delay: %f s.throw.", last_dispatch_time - time);
+                // RCLCPP_WARN(rclcpp::get_logger("dispatch_queue"), "old laser msg.delay: %f s.throw.", last_dispatch_time - time);
                 return;
             }
             if (!dispatch_data_queues[LASER].empty() && dispatch_data_queues[LASER].back()->time >= time)
             {
-                ROS_WARN("unolder laser msg.delay: %f s.throw.", dispatch_data_queues[LASER].back()->time - time);
+                RCLCPP_WARN(rclcpp::get_logger("dispatch_queue"), "unolder laser msg.delay: %f s.throw.", dispatch_data_queues[LASER].back()->time - time);
                 return;
             }
             auto tmp_ptr = create_dispatchable_data<sensor::laser>(msg);
@@ -125,18 +135,20 @@ namespace lvio_2d
                 dispatch_cv.notify_one();
             }
         }
-        void add_imu_msg(const sensor_msgs::Imu::ConstPtr &msg)
+        
+        // 【修改】消息类型改为 msg::Imu::ConstSharedPtr
+        void add_imu_msg(const sensor_msgs::msg::Imu::ConstSharedPtr &msg)
         {
             std::unique_lock<std::mutex> lock(dispatch_mutex);
-            double time = msg->header.stamp.toSec();
+            double time = rclcpp::Time(msg->header.stamp).seconds(); // 【修改】时间戳
             if (last_dispatch_time >= time)
             {
-                // ROS_WARN("old imu msg.delay: %f s.throw.", last_dispatch_time - time);
+                // RCLCPP_WARN(rclcpp::get_logger("dispatch_queue"), "old imu msg.delay: %f s.throw.", last_dispatch_time - time);
                 return;
             }
             if (!dispatch_data_queues[IMU].empty() && dispatch_data_queues[IMU].back()->time >= time)
             {
-                ROS_WARN("unolder imu msg.delay: %f s.throw.", dispatch_data_queues[IMU].back()->time - time);
+                RCLCPP_WARN(rclcpp::get_logger("dispatch_queue"), "unolder imu msg.delay: %f s.throw.", dispatch_data_queues[IMU].back()->time - time);
                 return;
             }
             auto tmp_ptr = create_dispatchable_data<sensor::imu>(msg);
@@ -146,19 +158,21 @@ namespace lvio_2d
                 dispatch_cv.notify_one();
             }
         }
-        void add_wheel_odom_msg(const nav_msgs::Odometry::ConstPtr &msg)
+        
+        // 【修改】消息类型改为 msg::Odometry::ConstSharedPtr
+        void add_wheel_odom_msg(const nav_msgs::msg::Odometry::ConstSharedPtr &msg)
         {
             std::unique_lock<std::mutex> lock(dispatch_mutex);
 
-            double time = msg->header.stamp.toSec();
+            double time = rclcpp::Time(msg->header.stamp).seconds(); // 【修改】时间戳
             if (last_dispatch_time >= time)
             {
-                ROS_WARN("old wheel msg.delay: %f s.throw.", last_dispatch_time - time);
+                RCLCPP_WARN(rclcpp::get_logger("dispatch_queue"), "old wheel msg.delay: %f s.throw.", last_dispatch_time - time);
                 return;
             }
             if (!dispatch_data_queues[WHEEL_ODOM].empty() && dispatch_data_queues[WHEEL_ODOM].back()->time >= time)
             {
-                ROS_WARN("unolder wheel_odom msg.delay: %f s.throw.", dispatch_data_queues[WHEEL_ODOM].back()->time - time);
+                RCLCPP_WARN(rclcpp::get_logger("dispatch_queue"), "unolder wheel_odom msg.delay: %f s.throw.", dispatch_data_queues[WHEEL_ODOM].back()->time - time);
                 return;
             }
             auto tmp_ptr = create_dispatchable_data<sensor::wheel_odom>(msg);
@@ -168,18 +182,20 @@ namespace lvio_2d
                 dispatch_cv.notify_one();
             }
         }
-        void add_camera_msg(const sensor_msgs::ImageConstPtr &msg)
+        
+        // 【修改】消息类型改为 msg::Image::ConstSharedPtr
+        void add_camera_msg(const sensor_msgs::msg::Image::ConstSharedPtr &msg)
         {
             std::unique_lock<std::mutex> lock(dispatch_mutex);
-            double time = msg->header.stamp.toSec();
+            double time = rclcpp::Time(msg->header.stamp).seconds(); // 【修改】时间戳
             if (last_dispatch_time >= time)
             {
-                ROS_WARN("old camera msg.delay: %f s.throw.", last_dispatch_time - time);
+                RCLCPP_WARN(rclcpp::get_logger("dispatch_queue"), "old camera msg.delay: %f s.throw.", last_dispatch_time - time);
                 return;
             }
             if (!dispatch_data_queues[CAMERA].empty() && dispatch_data_queues[CAMERA].back()->time >= time)
             {
-                ROS_WARN("unolder camera msg.delay: %f s.throw.", dispatch_data_queues[CAMERA].back()->time - time);
+                RCLCPP_WARN(rclcpp::get_logger("dispatch_queue"), "unolder camera msg.delay: %f s.throw.", dispatch_data_queues[CAMERA].back()->time - time);
                 return;
             }
             auto tmp_ptr = create_dispatchable_data<sensor::camera>(msg);
@@ -189,6 +205,7 @@ namespace lvio_2d
                 dispatch_cv.notify_one();
             }
         }
+        
         void dispatch()
         {
             while (!quit)
@@ -238,21 +255,6 @@ namespace lvio_2d
                         record.pop_front();
                 }
                 ptr->add_to_trajectory(trajectory_ptr);
-
-                // std::cout << "add_to_trajectory FPS:" << std::endl;
-                // for (auto [type, q] : use_records)
-                // {
-                //     std::cout << type << ":";
-                //     if (q.empty() || q.size() == 1)
-                //     {
-                //         std::cout << "0" << std::endl;
-                //         continue;
-                //     }
-                //     double begin_stats_time = q.front();
-                //     double end_stas_time = q.back();
-                //     double diff = end_stas_time - begin_stats_time;
-                //     std::cout << std::to_string(int(q.size() * 100 / diff) / 100) << std::endl;
-                // }
             }
         }
     };

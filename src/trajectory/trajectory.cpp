@@ -1,6 +1,7 @@
 #include "trajectory/trajectory.h"
 #include "timerAndColor/timer.h"
 #include "utilies/visualization.h"
+#include <rclcpp/rclcpp.hpp> // 【新增】引入 ROS 2 核心库以使用日志系统
 
 static bool is_static(const Eigen::Isometry3d &delta_tf,
                       const double &p_motion_threshold,
@@ -149,12 +150,14 @@ namespace lvio_2d
 
         if (!imu_inited)
         {
-            ROS_WARN("abort camera msg.wait for imu  init.");
+            // 【修改】ROS 1 -> ROS 2 宏
+            RCLCPP_WARN(rclcpp::get_logger("trajectory"), "abort laser msg.wait for imu  init.");
             return;
         }
         if (!wheel_odom_inited)
         {
-            ROS_WARN("abort camera msg.wait for wheel odom init.");
+            // 【修改】ROS 1 -> ROS 2 宏
+            RCLCPP_WARN(rclcpp::get_logger("trajectory"), "abort laser msg.wait for wheel odom init.");
             return;
         }
         auto wheel_result_filter = wheel_odom_preintegration_.get_preintegraption_result();
@@ -281,12 +284,14 @@ namespace lvio_2d
         double time = camera_image_ptr->time_stamp;
         if (!imu_inited)
         {
-            ROS_WARN("abort camera msg.wait for imu  init.");
+            // 【修改】ROS 1 -> ROS 2 宏
+            RCLCPP_WARN(rclcpp::get_logger("trajectory"), "abort camera msg.wait for imu  init.");
             return;
         }
         if (!wheel_odom_inited)
         {
-            ROS_WARN("abort camera msg.wait for wheel odom init.");
+            // 【修改】ROS 1 -> ROS 2 宏
+            RCLCPP_WARN(rclcpp::get_logger("trajectory"), "abort camera msg.wait for wheel odom init.");
             return;
         }
         auto wheel_result_filter = wheel_odom_preintegration_.get_preintegraption_result();
@@ -307,7 +312,7 @@ namespace lvio_2d
         {
             if (imu_preintegraption_.Dt < PARAM(min_delta_t))
             {
-                // ROS_WARN("too short Dt:%lf.abort", imu_preintegraption_.Dt);
+                // RCLCPP_WARN(rclcpp::get_logger("trajectory"), "too short Dt:%lf.abort", imu_preintegraption_.Dt);
                 return;
             }
         }
@@ -554,7 +559,9 @@ namespace lvio_2d
         double y = current_tf_base.matrix()(1, 3);
         double z = current_tf_base.matrix()(2, 3);
         if (last_outpu_time >= frame_infos.back()->time)
-            ROS_ERROR("error output time %lf", last_outpu_time - frame_infos.back()->time);
+            // 【修改】ROS 1 -> ROS 2 宏
+            RCLCPP_ERROR(rclcpp::get_logger("trajectory"), "error output time %lf", last_outpu_time - frame_infos.back()->time);
+        
         o_fstream << frame_infos.back()->time << " " << x << " " << y << " " << z << " " << q.x() << " " << q.y() << " " << q.z() << " " << q.w() << std::endl;
         last_outpu_time = frame_infos.back()->time;
     }

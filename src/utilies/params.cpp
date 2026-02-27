@@ -1,193 +1,156 @@
 #include "params.h"
 #include "utilies/common.h"
+
+// 辅助宏：ROS 2 风格
 #define ECHO_PARAM(name) GREEN_INFO(true, #name << ":\t" << name << std::endl)
-#define LOAD_PARAM(nh, name)      \
-    do                            \
-    {                             \
-        nh.getParam(#name, name); \
-        ECHO_PARAM(name);         \
+
+// 在 ROS 2 中，必须先 declare 再 get
+#define LOAD_PARAM(node, name) \
+    do { \
+        node->declare_parameter(#name, name); \
+        node->get_parameter(#name, name); \
+        ECHO_PARAM(name); \
     } while (0)
 
-#define ECHO_TF(name) GREEN_INFO(true, #name << ":\n" \
-                                             << name.matrix() << std::endl)
-#define LOAD_TF(nh, name)                 \
-    do                                    \
-    {                                     \
-        name = load_transform(#name, nh); \
-        ECHO_TF(name);                    \
-    } while (0)
+// // 处理 Eigen 类型 (ROS 2 参数通常是 std::vector)
+// template <typename T>
+// T load_eigen_param(rclcpp::Node::SharedPtr node, const std::string &name, int rows, int cols) {
+//     std::vector<double> vec;
+//     node->declare_parameter(name, std::vector<double>(rows * cols, 0.0));
+//     node->get_parameter(name, vec);
+    
+//     T res;
+//     if (rows == 4 && cols == 4) { // Isometry3d
+//         Eigen::Matrix4d mat;
+//         for (int i = 0; i < 16; ++i) mat.data()[i] = vec[i]; // 注意 Data() 是列优先
+//         // 或者按照你原来的逻辑 [r*4+c]
+//         for(int r=0; r<4; ++r) for(int c=0; c<4; ++c) mat(r,c) = vec[r*4+c];
+//         res = Eigen::Isometry3d(mat);
+//     } else {
+//         for(int r=0; r<rows; ++r) 
+//             for(int c=0; c<cols; ++c) 
+//                 res(r,c) = vec[r*cols + c];
+//     }
+//     return res;
+// }
 
-#define ECHO_VEC(name) GREEN_INFO(true, #name << ":\t" \
-                                              << name.transpose() << std::endl)
-#define LOAD_VEC(nh, name, N)              \
-    do                                     \
-    {                                      \
-        name = load_vectorX<N>(#name, nh); \
-        ECHO_VEC(name);                    \
-    } while (0)
-
-#define ECHO_MAT(name) GREEN_INFO(true, #name << ":\n" \
-                                              << name << std::endl)
-#define LOAD_MAT(nh, name, N)              \
-    do                                     \
-    {                                      \
-        name = load_matrixX<N>(#name, nh); \
-        ECHO_MAT(name);                    \
-    } while (0)
-
-#define LOAD_MAT3(nh, name) LOAD_MAT(nh, name, 3)
-#define LOAD_MAT2(nh, name) LOAD_MAT(nh, name, 2)
-
-#define LOAD_VEC3(nh, name) LOAD_VEC(nh, name, 3)
-#define LOAD_VEC2(nh, name) LOAD_VEC(nh, name, 2)
-
-Eigen::Isometry3d load_transform(const std::string &param_name, const ros::NodeHandle &nh)
-{
-    XmlRpc::XmlRpcValue param_list;
-    Eigen::Isometry3d ret;
-    nh.getParam(param_name, param_list);
-    for (size_t r = 0; r < 4; r++)
-        for (size_t c = 0; c < 4; c++)
-            ret.matrix().data()[c * 4 + r] = param_list[r * 4 + c];
-    lie::normalize_tf(ret);
-    return ret;
-}
-template <size_t N>
-Eigen::Matrix<double, N, 1> load_vectorX(const std::string &param_name, const ros::NodeHandle &nh)
-{
-    XmlRpc::XmlRpcValue param_list;
-    Eigen::Matrix<double, N, 1> ret;
-    nh.getParam(param_name, param_list);
-    for (size_t i = 0; i < N; i++)
-        ret(i) = param_list[i];
-    return ret;
+template <typename T>
+T load_eigen_param(rclcpp::Node::SharedPtr node, const std::string &name, int rows, int cols) {
+    std::vector<double> vec;
+    node->declare_parameter(name, std::vector<double>(rows * cols, 0.0));
+    node->get_parameter(name, vec);
+    
+    T res;
+    // 【关键修改】：使用 if constexpr 和 std::is_same_v 在编译期判断类型 T
+    if constexpr (std::is_same_v<T, Eigen::Isometry3d>) { 
+        Eigen::Matrix4d mat;
+        for(int r=0; r<4; ++r) 
+            for(int c=0; c<4; ++c) 
+                mat(r,c) = vec[r*4+c];
+        res = Eigen::Isometry3d(mat);
+    } else {
+        // 如果 T 不是 Isometry3d (比如是 Vector3d, Matrix3d)，只编译这部分
+        for(int r=0; r<rows; ++r) 
+            for(int c=0; c<cols; ++c) 
+                res(r,c) = vec[r*cols + c];
+    }
+    return res;
 }
 
-template <size_t N>
-Eigen::Matrix<double, N, N> load_matrixX(const std::string &param_name, const ros::NodeHandle &nh)
-{
-    XmlRpc::XmlRpcValue param_list;
-    Eigen::Matrix<double, N, N> ret;
-    nh.getParam(param_name, param_list);
-    for (size_t r = 0; r < N; r++)
-        for (size_t c = 0; c < N; c++)
-            ret(r, c) = param_list[r * N + c];
-    return ret;
-}
+namespace lvio_2d {
+    namespace param {
 
-namespace lvio_2d
-{
-    namespace param
-    {
-        manager::ptr manager::get_param_manager()
-        {
+        manager::ptr manager::get_param_manager(rclcpp::Node::SharedPtr node) {
             static manager::ptr ptr = nullptr;
-            if (!ptr)
-            {
-                static ros::NodeHandle nh("~");
-                ptr = manager::ptr(new manager(nh));
+            if (!ptr) {
+                if (!node) {
+                    throw std::runtime_error("Param manager must be initialized with a node pointer first!");
+                }
+                ptr = manager::ptr(new manager(node));
             }
             return ptr;
         }
-        manager::manager(const ros::NodeHandle &nh)
-        {
-            LOAD_PARAM(nh, wheel_odom_topic);
-            LOAD_PARAM(nh, laser_topic);
-            LOAD_PARAM(nh, imu_topic);
-            LOAD_PARAM(nh, camera_topic);
-            LOAD_PARAM(nh, g);
 
-            LOAD_PARAM(nh, manifold_p_sigma);
-            LOAD_PARAM(nh, manifold_q_sigma);
+        manager::manager(rclcpp::Node::SharedPtr node) {
+            // 加载基础类型
+            LOAD_PARAM(node, wheel_odom_topic);
+            LOAD_PARAM(node, laser_topic);
+            LOAD_PARAM(node, imu_topic);
+            LOAD_PARAM(node, camera_topic);
+            LOAD_PARAM(node, g);
+            LOAD_PARAM(node, manifold_p_sigma);
+            LOAD_PARAM(node, manifold_q_sigma);
 
-            LOAD_TF(nh, T_imu_to_camera);
-            LOAD_TF(nh, T_imu_to_laser);
-            LOAD_TF(nh, T_imu_to_wheel);
+            // 加载 Eigen 类型
+            T_imu_to_camera = load_eigen_param<Eigen::Isometry3d>(node, "T_imu_to_camera", 4, 4);
+            T_imu_to_laser = load_eigen_param<Eigen::Isometry3d>(node, "T_imu_to_laser", 4, 4);
+            T_imu_to_wheel = load_eigen_param<Eigen::Isometry3d>(node, "T_imu_to_wheel", 4, 4);
 
-            LOAD_VEC3(nh, imu_noise_acc_sigma);
-            LOAD_VEC3(nh, imu_bias_acc_sigma);
-            LOAD_VEC3(nh, imu_noise_gyro_sigma);
-            LOAD_VEC3(nh, imu_bias_gyro_sigma);
-            LOAD_VEC3(nh, wheel_sigma);
+            imu_noise_acc_sigma = load_eigen_param<Eigen::Vector3d>(node, "imu_noise_acc_sigma", 3, 1);
+            imu_bias_acc_sigma = load_eigen_param<Eigen::Vector3d>(node, "imu_bias_acc_sigma", 3, 1);
+            imu_noise_gyro_sigma = load_eigen_param<Eigen::Vector3d>(node, "imu_noise_gyro_sigma", 3, 1);
+            imu_bias_gyro_sigma = load_eigen_param<Eigen::Vector3d>(node, "imu_bias_gyro_sigma", 3, 1);
+            wheel_sigma = load_eigen_param<Eigen::Vector3d>(node, "wheel_sigma", 3, 1);
+            loop_sigma_p = load_eigen_param<Eigen::Vector3d>(node, "loop_sigma_p", 3, 1);
+            loop_sigma_q = load_eigen_param<Eigen::Vector3d>(node, "loop_sigma_q", 3, 1);
+            camera_sigma = load_eigen_param<Eigen::Vector2d>(node, "camera_sigma", 2, 1);
+            camera_K = load_eigen_param<Eigen::Matrix3d>(node, "camera_K", 3, 3);
 
-            LOAD_VEC2(nh, camera_sigma);
+            // 其余参数
+            LOAD_PARAM(node, max_feature_num);
+            LOAD_PARAM(node, slide_window_size);
+            LOAD_PARAM(node, p_motion_threshold);
+            LOAD_PARAM(node, q_motion_threshold);
+            LOAD_PARAM(node, w_laser_each_scan);
+            LOAD_PARAM(node, h_laser_each_scan);
+            LOAD_PARAM(node, laser_resolution);
+            LOAD_PARAM(node, line_continuous_threshold);
+            LOAD_PARAM(node, line_max_tolerance_angle);
+            LOAD_PARAM(node, line_min_len);
+            LOAD_PARAM(node, line_max_dis);
+            LOAD_PARAM(node, line_to_line_sigma);
+            LOAD_PARAM(node, enable_camera);
+            LOAD_PARAM(node, enable_laser);
+            LOAD_PARAM(node, enable_camera_vis);
+            LOAD_PARAM(node, enable_laser_vis);
+            LOAD_PARAM(node, max_camera_reproject_error);
+            LOAD_PARAM(node, max_camera_feature_dis);
+            LOAD_PARAM(node, feature_min_dis);
+            LOAD_PARAM(node, FPS);
+            LOAD_PARAM(node, key_frame_p_motion_threshold);
+            LOAD_PARAM(node, key_frame_q_motion_threshold);
+            LOAD_PARAM(node, a_res);
+            LOAD_PARAM(node, d_res);
+            LOAD_PARAM(node, submap_count);
+            LOAD_PARAM(node, laser_loop_min_match_threshold);
+            LOAD_PARAM(node, loop_detect_min_interval);
+            LOAD_PARAM(node, output_dir);
+            LOAD_PARAM(node, output_tum);
+            LOAD_PARAM(node, use_ground_p_factor);
+            LOAD_PARAM(node, use_ground_q_factor);
+            LOAD_PARAM(node, verify_loop_rate);
+            LOAD_PARAM(node, loop_max_dis);
+            LOAD_PARAM(node, loop_edge_k);
+            LOAD_PARAM(node, ref_motion_filter_p);
+            LOAD_PARAM(node, ref_motion_filter_q);
+            LOAD_PARAM(node, ref_n_accumulation);
+            LOAD_PARAM(node, loop_max_tf_p);
+            LOAD_PARAM(node, loop_max_tf_q);
+            LOAD_PARAM(node, fast_mode);
 
-            LOAD_PARAM(nh, max_feature_num);
-
-            LOAD_PARAM(nh, slide_window_size);
-            LOAD_PARAM(nh, p_motion_threshold);
-            LOAD_PARAM(nh, q_motion_threshold);
-
-            LOAD_PARAM(nh, w_laser_each_scan);
-            LOAD_PARAM(nh, h_laser_each_scan);
-            LOAD_PARAM(nh, laser_resolution);
-
-            LOAD_PARAM(nh, line_continuous_threshold);
-            LOAD_PARAM(nh, line_max_tolerance_angle);
-            LOAD_PARAM(nh, line_min_len);
-            LOAD_PARAM(nh, line_max_dis);
-            LOAD_PARAM(nh, line_to_line_sigma);
-
-            LOAD_PARAM(nh, enable_camera);
-            LOAD_PARAM(nh, enable_laser);
-            LOAD_PARAM(nh, enable_camera_vis);
-            LOAD_PARAM(nh, enable_laser_vis);
-
-            LOAD_PARAM(nh, max_camera_reproject_error);
-            LOAD_PARAM(nh, max_camera_feature_dis);
-
-            LOAD_MAT3(nh, camera_K);
-
-            LOAD_PARAM(nh, feature_min_dis);
-
-            LOAD_PARAM(nh, FPS);
-
-            LOAD_PARAM(nh, key_frame_p_motion_threshold);
-            LOAD_PARAM(nh, key_frame_q_motion_threshold);
-
-            LOAD_PARAM(nh, a_res);
-            LOAD_PARAM(nh, d_res);
-            LOAD_PARAM(nh, submap_count);
-            LOAD_PARAM(nh, laser_loop_min_match_threshold);
-            LOAD_PARAM(nh, loop_detect_min_interval);
-            LOAD_PARAM(nh, output_dir);
-            LOAD_PARAM(nh, output_tum);
-            LOAD_PARAM(nh, use_ground_p_factor);
-            LOAD_PARAM(nh, use_ground_q_factor);
-            LOAD_PARAM(nh, verify_loop_rate);
-            LOAD_PARAM(nh, loop_max_dis);
-
-            LOAD_PARAM(nh, loop_edge_k);
-            LOAD_PARAM(nh, ref_motion_filter_p);
-            LOAD_PARAM(nh, ref_motion_filter_q);
-            LOAD_PARAM(nh, ref_n_accumulation);
-
-            LOAD_PARAM(nh, loop_max_tf_p);
-            LOAD_PARAM(nh, loop_max_tf_q);
-
-            LOAD_VEC3(nh, loop_sigma_p);
-            LOAD_VEC3(nh, loop_sigma_q);
-
-            LOAD_PARAM(nh, fast_mode);
-
-            if (!check_param())
-                exit(-1);
+            if (!check_param()) exit(-1);
         }
-        bool manager::check_param()
-        {
-            if (!enable_laser)
-                enable_laser_vis = false;
-            if (!enable_camera)
-                enable_camera_vis = false;
-            if (!enable_camera && !enable_laser)
-            {
-                RED_INFO(true, "ERROR: disable camera and disable laser");
+
+        bool manager::check_param() {
+            if (!enable_laser) enable_laser_vis = false;
+            if (!enable_camera) enable_camera_vis = false;
+            if (!enable_camera && !enable_laser) {
+                RCLCPP_ERROR(rclcpp::get_logger("rclcpp"), "ERROR: disable camera and disable laser");
                 return false;
             }
             max_camera_reproject_error = max_camera_reproject_error / camera_K(0, 0);
             min_delta_t = 1.0 / double(FPS);
             return true;
         }
-
-    } // namespace param
-} // namespace lvio_2d
+    } 
+}

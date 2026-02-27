@@ -1,6 +1,8 @@
 #pragma once
 #include "factor/factor_common.h"
 #include "trajectory/sensor.h"
+#include <rclcpp/rclcpp.hpp> // 【新增】引入 ROS 2 日志系统
+
 namespace lvio_2d
 {
     struct wheel_noise
@@ -86,7 +88,9 @@ namespace lvio_2d
             omega = delta_theta / dt;
             double update_dt = data->time_stamp - last_update_time;
             if (update_dt < 0)
-                ROS_WARN("call by add_wheel_odom_measure");
+                // 【修改】ROS 1 宏替换为 ROS 2 宏
+                RCLCPP_WARN(rclcpp::get_logger("wheel_odom_preintegration"), "call by add_wheel_odom_measure");
+            
             update_by_v(update_dt);
 
             last_add_wheel_odom_pose = data->pose;
@@ -104,10 +108,13 @@ namespace lvio_2d
             }
             double update_dt = time - last_update_time;
             if (update_dt < 0)
-                ROS_WARN("call by update_only_t");
+                // 【修改】ROS 1 宏替换为 ROS 2 宏
+                RCLCPP_WARN(rclcpp::get_logger("wheel_odom_preintegration"), "call by update_only_t");
+            
             update_by_v(update_dt);
             last_update_time = time;
         }
+        
         wheel_odom_preint_result::ptr get_preintegraption_result()
         {
             Eigen::Matrix3d cov = Eigen::Matrix3d::Zero();
@@ -138,11 +145,13 @@ namespace lvio_2d
         Eigen::Matrix<double, 6, 6> cov;
 
         double Dt;
+        
         void update_by_v(const double &dt)
         {
             if (dt <= 0 || dt >= 10)
             {
-                ROS_WARN("dt <= 0) || dt>=10 :%lf", dt);
+                // 【修改】ROS 1 宏替换为 ROS 2 宏，RCLCPP_WARN 同样支持类似 printf 的格式化输出
+                RCLCPP_WARN(rclcpp::get_logger("wheel_odom_preintegration"), "dt <= 0 || dt>=10 :%lf", dt);
                 return;
             }
 

@@ -1,0 +1,43 @@
+[0.008s] Invoking command in '/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/build/lvio_2d': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/ubuntu/ros2_tb4_ws/install/turtlebot4_tests:/home/ubuntu/ros2_tb4_ws/install/turtlebot4_python_tutorials:/home/ubuntu/ros2_tb4_ws/install/turtlebot4_openai_tutorials:/home/ubuntu/ros2_tb4_ws/install/turtlebot4_diagnostics:/opt/ros/humble /usr/bin/cmake --build /home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/build/lvio_2d -- -j20 -l20
+[0.040s] [35m[1mConsolidate compiler generated dependencies of target utilies[0m
+[0.042s] [35m[1mConsolidate compiler generated dependencies of target trajectory[0m
+[0.058s] [ 33%] Built target utilies
+[0.067s] [ 83%] Built target trajectory
+[0.078s] [35m[1mConsolidate compiler generated dependencies of target lvio_2d_node[0m
+[0.092s] [100%] Built target lvio_2d_node
+[0.100s] Invoked command in '/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/build/lvio_2d' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/ubuntu/ros2_tb4_ws/install/turtlebot4_tests:/home/ubuntu/ros2_tb4_ws/install/turtlebot4_python_tutorials:/home/ubuntu/ros2_tb4_ws/install/turtlebot4_openai_tutorials:/home/ubuntu/ros2_tb4_ws/install/turtlebot4_diagnostics:/opt/ros/humble /usr/bin/cmake --build /home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/build/lvio_2d -- -j20 -l20
+[0.107s] Invoking command in '/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/build/lvio_2d': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/ubuntu/ros2_tb4_ws/install/turtlebot4_tests:/home/ubuntu/ros2_tb4_ws/install/turtlebot4_python_tutorials:/home/ubuntu/ros2_tb4_ws/install/turtlebot4_openai_tutorials:/home/ubuntu/ros2_tb4_ws/install/turtlebot4_diagnostics:/opt/ros/humble /usr/bin/cmake --install /home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/build/lvio_2d
+[0.113s] -- Install configuration: ""
+[0.113s] -- Up-to-date: /home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/install/lvio_2d/lib/lvio_2d/lvio_2d_node
+[0.113s] -- Up-to-date: /home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/install/lvio_2d/lib/lvio_2d/libutilies.so
+[0.113s] -- Up-to-date: /home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/install/lvio_2d/lib/lvio_2d/libtrajectory.so
+[0.113s] -- Up-to-date: /home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/install/lvio_2d/share/lvio_2d/launch
+[0.113s] -- Up-to-date: /home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/install/lvio_2d/share/lvio_2d/launch/lvio_2d.launch.py
+[0.113s] -- Up-to-date: /home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/install/lvio_2d/share/lvio_2d/launch/lvio_2d_office.launch
+[0.113s] -- Up-to-date: /home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/install/lvio_2d/share/lvio_2d/launch/lvio_2d_market.launch
+[0.113s] -- Up-to-date: /home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/install/lvio_2d/share/lvio_2d/launch/lvio_2d.launch
+[0.113s] -- Up-to-date: /home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/install/lvio_2d/share/lvio_2d/launch/lvio_2d_cafe.launch
+[0.113s] -- Up-to-date: /home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/install/lvio_2d/share/lvio_2d/launch/lvio_2d_corridor.launch
+[0.113s] -- Up-to-date: /home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/install/lvio_2d/share/lvio_2d/launch/display.rviz
+[0.113s] -- Up-to-date: /home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/install/lvio_2d/share/lvio_2d/config
+[0.113s] -- Up-to-date: /home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/install/lvio_2d/share/lvio_2d/config/office.yaml
+[0.113s] -- Up-to-date: /home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/install/lvio_2d/share/lvio_2d/config/cafe.yaml
+[0.113s] -- Up-to-date: /home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/install/lvio_2d/share/lvio_2d/config/corridor.yaml
+[0.113s] -- Up-to-date: /home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/install/lvio_2d/share/lvio_2d/config/params.yaml
+[0.113s] -- Up-to-date: /home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/install/lvio_2d/share/lvio_2d/config/ros2_params.yaml
+[0.114s] -- Up-to-date: /home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/install/lvio_2d/share/ament_index/resource_index/package_run_dependencies/lvio_2d
+[0.114s] -- Up-to-date: /home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/install/lvio_2d/share/ament_index/resource_index/parent_prefix_path/lvio_2d
+[0.114s] -- Up-to-date: /home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/install/lvio_2d/share/lvio_2d/environment/ament_prefix_path.sh
+[0.114s] -- Up-to-date: /home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/install/lvio_2d/share/lvio_2d/environment/ament_prefix_path.dsv
+[0.114s] -- Up-to-date: /home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/install/lvio_2d/share/lvio_2d/environment/path.sh
+[0.114s] -- Up-to-date: /home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/install/lvio_2d/share/lvio_2d/environment/path.dsv
+[0.114s] -- Up-to-date: /home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/install/lvio_2d/share/lvio_2d/local_setup.bash
+[0.114s] -- Up-to-date: /home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/install/lvio_2d/share/lvio_2d/local_setup.sh
+[0.114s] -- Up-to-date: /home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/install/lvio_2d/share/lvio_2d/local_setup.zsh
+[0.114s] -- Up-to-date: /home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/install/lvio_2d/share/lvio_2d/local_setup.dsv
+[0.114s] -- Installing: /home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/install/lvio_2d/share/lvio_2d/package.dsv
+[0.114s] -- Up-to-date: /home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/install/lvio_2d/share/ament_index/resource_index/packages/lvio_2d
+[0.114s] -- Up-to-date: /home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/install/lvio_2d/share/lvio_2d/cmake/lvio_2dConfig.cmake
+[0.114s] -- Up-to-date: /home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/install/lvio_2d/share/lvio_2d/cmake/lvio_2dConfig-version.cmake
+[0.114s] -- Up-to-date: /home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/install/lvio_2d/share/lvio_2d/package.xml
+[0.115s] Invoked command in '/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/build/lvio_2d' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/ubuntu/ros2_tb4_ws/install/turtlebot4_tests:/home/ubuntu/ros2_tb4_ws/install/turtlebot4_python_tutorials:/home/ubuntu/ros2_tb4_ws/install/turtlebot4_openai_tutorials:/home/ubuntu/ros2_tb4_ws/install/turtlebot4_diagnostics:/opt/ros/humble /usr/bin/cmake --install /home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/build/lvio_2d

@@ -1,5 +1,7 @@
 #include "trajectory/laser_manager.h"
 #include "timerAndColor/timer.h"
+#include <rclcpp/rclcpp.hpp> // 【新增】引入 ROS 2 核心库以使用日志宏
+
 constexpr double epsilo = 0.0008;
 
 // helper fun
@@ -38,7 +40,8 @@ namespace lvio_2d
     {
         if (l1 == l2)
         {
-            ROS_ERROR("ERROR");
+            // 【修改】使用 ROS 2 的日志宏，并指定一个 logger 名称
+            RCLCPP_ERROR(rclcpp::get_logger("laser_manager"), "ERROR: l1 == l2");
         }
         Eigen::Vector3d v1 = l1->p1 - l1->p2;
         Eigen::Vector3d v2 = l2->p1 - l2->p2;
@@ -204,10 +207,6 @@ namespace lvio_2d
                         if (lines.empty() || lines.back() != l)
                             lines.push_back(l);
                     }
-                    // else if (line_map(r,c).front()->len < 0.1 && len > line_map(r,c).front()->len)
-                    // {
-                    //     line_map(r,c).front() = l;
-                    // }
                 }
             }
         }
@@ -300,12 +299,6 @@ namespace lvio_2d
             }
             if (convert::rad_to_angle(best_angle) > 10)
                 continue;
-            // double len1 = (best_match_line->p1 - best_match_line->p2).norm();
-            // double len2 = (scan2->lines[i]->p1 - scan2->lines[i]->p2).norm();
-            // double max_len = std::max(len1, len2);
-            // double min_len = std::min(len1, len2);
-            // if (min_len / max_len < 0.8)
-            //     continue;
 
             ret->lines1.push_back(best_match_line);
             ret->lines2.push_back(scan2->lines[i]);
@@ -350,14 +343,11 @@ namespace lvio_2d
     scan::ptr laser_manager::spawn_scan(const sensor::laser::u_ptr &laser)
     {
 
-        // lmicroTimer("spawn_scan");
-        //  假设已经通过某种手段消除去了运动畸变
         double time = laser->times_ptr->front();
         std::vector<Eigen::Vector3d> &points = *(laser->points_ptr);
         scan::ptr current_scan = std::make_shared<scan>(w, h, resolution, time);
         if (PARAM(enable_laser_vis))
             current_scan->points = points;
-        // lmicroTimer("add laser");
         std::vector<std::tuple<int, int>> line_start_end_indexs;
         {
             int start_index = 0;
@@ -425,7 +415,6 @@ namespace lvio_2d
                                  const Eigen::Vector3d &current_p,
                                  const Eigen::Vector3d &current_q)
     {
-        // lmicroTimer("add_scan");
         laser_submap::ptr submap_ptr(new laser_submap(scan_ptr, current_p, current_q));
         key_frame.push_back(submap_ptr);
 
@@ -550,8 +539,6 @@ namespace lvio_2d
             return nullptr;
         laser_submap::ptr ret = key_frame.front();
         ret->scan_ptr->line_map.destroy();
-        // ret->scan_ptr->line_map.clear();
-        // ret->scan_ptr->line_map.shrink_to_fit();
 
         key_frame.pop_front();
         return ret;

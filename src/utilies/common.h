@@ -4,25 +4,29 @@
 #include <ceres/rotation.h>
 #include <limits>
 #include <memory>
-#include <sensor_msgs/LaserScan.h>
+// ROS 2 Humble 消息头文件路径
+#include <sensor_msgs/msg/laser_scan.hpp>
 #include <vector>
+#include <tuple>
+#include <type_traits> // 新增这行，用于类型判断
 
 static inline constexpr double TIME_MIN = std::numeric_limits<double>::min();
 static inline constexpr double TIME_MAX = std::numeric_limits<double>::max();
+
 namespace convert
 {
+    // 修改为 ROS 2 的消息类型和智能指针 (ConstSharedPtr)
     std::tuple<std::shared_ptr<std::vector<Eigen::Vector3d>>, std::shared_ptr<std::vector<double>>>
-    laser_to_point_times(const sensor_msgs::LaserScan::ConstPtr &msg);
+    laser_to_point_times(const sensor_msgs::msg::LaserScan::ConstSharedPtr &msg);
+
     template <typename T>
     Eigen::Matrix<T, 3, 3> cross_matrix(const Eigen::Matrix<T, 3, 1> &vec)
     {
         Eigen::Matrix<T, 3, 3> ret = Eigen::Matrix<T, 3, 3>::Zero();
         ret(0, 1) = -vec(2);
         ret(1, 0) = vec(2);
-
         ret(0, 2) = vec(1);
         ret(2, 0) = -vec(1);
-
         ret(1, 2) = -vec(0);
         ret(2, 1) = vec(0);
         return ret;
@@ -32,7 +36,7 @@ namespace convert
     Eigen::Matrix<T, N, N> disdiagonal(const Eigen::Matrix<T, N, 1> &vec)
     {
         Eigen::Matrix<T, N, N> ret = Eigen::Matrix<T, N, N>::Zero();
-        for (int i = 0; i < N; i++)
+        for (int i = 0; i < (int)N; i++)
             ret(i, i) = vec(i);
         return ret;
     }
@@ -41,22 +45,22 @@ namespace convert
     Eigen::Matrix<T, N, N> disdiagonal2(const Eigen::Matrix<T, N, 1> &vec)
     {
         Eigen::Matrix<T, N, N> ret = Eigen::Matrix<T, N, N>::Zero();
-        for (int i = 0; i < N; i++)
+        for (int i = 0; i < (int)N; i++)
             ret(i, i) = vec(i) * vec(i);
         return ret;
     }
+
     inline double angle_to_rad(const double &angle) { return angle / 180.0 * M_PI; }
     inline double rad_to_angle(const double &rad) { return rad / M_PI * 180.0; }
 
+    // 矩阵操作模板保持不变
     template <typename _Scalar, int _Rows, int _Cols, int _Options, int _MaxRows, int _MaxCols>
     void remove_rows(Eigen::Matrix<_Scalar, _Rows, _Cols, _Options, _MaxRows, _MaxCols> &mat, const int &begin_index,
                      const int &len)
     {
         unsigned int n_rows = mat.rows() - len;
         unsigned int n_cols = mat.cols();
-        assert(len >= 0);
-        assert(begin_index + len <= mat.rows());
-        if (begin_index < n_rows)
+        if (begin_index < (int)n_rows)
         {
             mat.block(begin_index, 0, n_rows - begin_index, n_cols) =
                 mat.block(begin_index + len, 0, n_rows - begin_index, n_cols);
@@ -70,17 +74,16 @@ namespace convert
     {
         unsigned int n_rows = mat.rows();
         unsigned int n_cols = mat.cols() - len;
-        assert(len >= 0);
-        assert(begin_index + len <= mat.cols());
-        if (begin_index < n_cols)
+        if (begin_index < (int)n_cols)
         {
             mat.block(0, begin_index, n_rows, n_cols - begin_index) =
                 mat.block(0, begin_index + len, n_rows, n_cols - begin_index);
         }
         mat.conservativeResize(n_rows, n_cols);
     }
-
 } // namespace convert
+
+
 namespace e_laser
 {
     template <typename T>

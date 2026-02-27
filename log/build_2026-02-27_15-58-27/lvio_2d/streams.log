@@ -1,0 +1,707 @@
+[0.007s] Invoking command in '/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/build/lvio_2d': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/ubuntu/ros2_tb4_ws/install/turtlebot4_tests:/home/ubuntu/ros2_tb4_ws/install/turtlebot4_python_tutorials:/home/ubuntu/ros2_tb4_ws/install/turtlebot4_openai_tutorials:/home/ubuntu/ros2_tb4_ws/install/turtlebot4_diagnostics:/opt/ros/humble /usr/bin/cmake /home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM -DCMAKE_INSTALL_PREFIX=/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/install/lvio_2d
+[0.046s] -- The C compiler identification is GNU 11.4.0
+[0.080s] -- The CXX compiler identification is GNU 11.4.0
+[0.084s] -- Detecting C compiler ABI info
+[0.130s] -- Detecting C compiler ABI info - done
+[0.134s] -- Check for working C compiler: /usr/bin/cc - skipped
+[0.134s] -- Detecting C compile features
+[0.134s] -- Detecting C compile features - done
+[0.136s] -- Detecting CXX compiler ABI info
+[0.189s] -- Detecting CXX compiler ABI info - done
+[0.194s] -- Check for working CXX compiler: /usr/bin/c++ - skipped
+[0.194s] -- Detecting CXX compile features
+[0.194s] -- Detecting CXX compile features - done
+[0.197s] -- Found ament_cmake: 1.3.11 (/opt/ros/humble/share/ament_cmake/cmake)
+[0.597s] -- Found Python3: /usr/bin/python3 (found version "3.10.12") found components: Interpreter 
+[0.680s] -- Found rclcpp: 16.0.12 (/opt/ros/humble/share/rclcpp/cmake)
+[0.721s] -- Found rosidl_generator_c: 3.1.6 (/opt/ros/humble/share/rosidl_generator_c/cmake)
+[0.726s] -- Found rosidl_adapter: 3.1.6 (/opt/ros/humble/share/rosidl_adapter/cmake)
+[0.734s] -- Found rosidl_generator_cpp: 3.1.6 (/opt/ros/humble/share/rosidl_generator_cpp/cmake)
+[0.744s] -- Using all available rosidl_typesupport_c: rosidl_typesupport_fastrtps_c;rosidl_typesupport_introspection_c
+[0.757s] -- Using all available rosidl_typesupport_cpp: rosidl_typesupport_fastrtps_cpp;rosidl_typesupport_introspection_cpp
+[0.796s] -- Found rmw_implementation_cmake: 6.1.2 (/opt/ros/humble/share/rmw_implementation_cmake/cmake)
+[0.800s] -- Found rmw_fastrtps_cpp: 6.2.7 (/opt/ros/humble/share/rmw_fastrtps_cpp/cmake)
+[0.870s] -- Found OpenSSL: /usr/lib/x86_64-linux-gnu/libcrypto.so (found version "3.0.2")  
+[0.891s] -- Found FastRTPS: /opt/ros/humble/include  
+[0.927s] -- Using RMW implementation 'rmw_fastrtps_cpp' as default
+[0.936s] -- Looking for pthread.h
+[0.997s] -- Looking for pthread.h - found
+[0.997s] -- Performing Test CMAKE_HAVE_LIBC_PTHREAD
+[1.050s] -- Performing Test CMAKE_HAVE_LIBC_PTHREAD - Success
+[1.051s] -- Found Threads: TRUE  
+[1.087s] -- Found sensor_msgs: 4.9.1 (/opt/ros/humble/share/sensor_msgs/cmake)
+[1.106s] -- Found cv_bridge: 3.2.1 (/opt/ros/humble/share/cv_bridge/cmake)
+[1.128s] -- Found CUDA: /usr/local/cuda-12.2 (found suitable exact version "12.2") 
+[1.138s] -- Found image_transport: 3.1.11 (/opt/ros/humble/share/image_transport/cmake)
+[1.168s] -- Found tf2_ros: 0.25.16 (/opt/ros/humble/share/tf2_ros/cmake)
+[1.230s] -- Found nav_msgs: 4.8.0 (/opt/ros/humble/share/nav_msgs/cmake)
+[1.241s] -- Found visualization_msgs: 4.8.0 (/opt/ros/humble/share/visualization_msgs/cmake)
+[1.255s] -- Found OpenCV: /usr/local (found version "4.8.0") 
+[1.268s] -- Found CXSparse: /usr/include/suitesparse (found suitable version "3.2.0", minimum required is "3.2.0") 
+[1.633s] -- Found AMD headers in: /usr/include/suitesparse
+[1.634s] -- Found AMD library: /usr/lib/x86_64-linux-gnu/libamd.so
+[1.634s] -- Found CAMD headers in: /usr/include/suitesparse
+[1.635s] -- Found CAMD library: /usr/lib/x86_64-linux-gnu/libcamd.so
+[1.636s] -- Found CCOLAMD headers in: /usr/include/suitesparse
+[1.637s] -- Found CCOLAMD library: /usr/lib/x86_64-linux-gnu/libccolamd.so
+[1.637s] -- Found CHOLMOD headers in: /usr/include/suitesparse
+[1.638s] -- Found CHOLMOD library: /usr/lib/x86_64-linux-gnu/libcholmod.so
+[1.638s] -- Found COLAMD headers in: /usr/include/suitesparse
+[1.639s] -- Found COLAMD library: /usr/lib/x86_64-linux-gnu/libcolamd.so
+[1.639s] -- Found SPQR headers in: /usr/include/suitesparse
+[1.640s] -- Found SPQR library: /usr/lib/x86_64-linux-gnu/libspqr.so
+[1.640s] -- Found Config headers in: /usr/include/suitesparse
+[1.641s] -- Found Config library: /usr/lib/x86_64-linux-gnu/libsuitesparseconfig.so
+[1.644s] -- Found Intel Thread Building Blocks (TBB) library (2021.5 / ) include location: . Assuming SuiteSparseQR was compiled with TBB.
+[1.644s] -- Looking for shm_open in rt
+[1.693s] -- Looking for shm_open in rt - found
+[1.693s] -- Adding librt to SuiteSparse_config libraries (required on Linux & Unix [not OSX] if SuiteSparse is compiled with timing).
+[1.697s] -- Could NOT find METIS (missing: METIS_INCLUDE_DIR METIS_LIBRARY) 
+[1.697s] -- Found SuiteSparse: /usr/include/suitesparse (found suitable version "5.10.1", minimum required is "5.10.1") found components: AMD CAMD CCOLAMD CHOLMOD COLAMD SPQR Config 
+[1.703s] -- Found required Ceres dependency: Eigen version 3.4.0 in /usr/share/eigen3/cmake
+[1.709s] -- Found required Ceres dependency: glog
+[1.710s] -- Found required Ceres dependency: gflags
+[1.710s] -- Found Ceres version: 2.1.0 installed in: /usr/local with components: [EigenSparse, SparseLinearAlgebraLibrary, LAPACK, SuiteSparse, CXSparse, SchurSpecializations, Multithreading]
+[1.765s] -- Configuring done
+[1.784s] -- Generating done
+[1.791s] -- Build files have been written to: /home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/build/lvio_2d
+[1.798s] Invoked command in '/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/build/lvio_2d' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/ubuntu/ros2_tb4_ws/install/turtlebot4_tests:/home/ubuntu/ros2_tb4_ws/install/turtlebot4_python_tutorials:/home/ubuntu/ros2_tb4_ws/install/turtlebot4_openai_tutorials:/home/ubuntu/ros2_tb4_ws/install/turtlebot4_diagnostics:/opt/ros/humble /usr/bin/cmake /home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM -DCMAKE_INSTALL_PREFIX=/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/install/lvio_2d
+[1.800s] Invoking command in '/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/build/lvio_2d': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/ubuntu/ros2_tb4_ws/install/turtlebot4_tests:/home/ubuntu/ros2_tb4_ws/install/turtlebot4_python_tutorials:/home/ubuntu/ros2_tb4_ws/install/turtlebot4_openai_tutorials:/home/ubuntu/ros2_tb4_ws/install/turtlebot4_diagnostics:/opt/ros/humble /usr/bin/cmake --build /home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/build/lvio_2d -- -j20 -l20
+[1.837s] [ 58%] [32mBuilding CXX object CMakeFiles/utilies.dir/src/utilies/params.cpp.o[0m
+[1.837s] [ 58%] [32mBuilding CXX object CMakeFiles/trajectory.dir/src/trajectory/laser_manager.cpp.o[0m
+[1.837s] [ 58%] [32mBuilding CXX object CMakeFiles/utilies.dir/src/utilies/visualization.cpp.o[0m
+[1.837s] [ 58%] [32mBuilding CXX object CMakeFiles/utilies.dir/src/utilies/common.cpp.o[0m
+[1.837s] [ 58%] [32mBuilding CXX object CMakeFiles/trajectory.dir/src/trajectory/camera_manager.cpp.o[0m
+[1.837s] [ 58%] [32mBuilding CXX object CMakeFiles/trajectory.dir/src/trajectory/trajectory.cpp.o[0m
+[1.837s] [ 58%] [32mBuilding CXX object CMakeFiles/trajectory.dir/src/trajectory/keyframe_manager.cpp.o[0m
+[1.838s] [ 66%] [32mBuilding CXX object CMakeFiles/trajectory.dir/src/factor/solver.cpp.o[0m
+[4.201s] In file included from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/factor/camera_factor.h:2[m[K,
+[4.201s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/trajectory/trajectory.h:2[m[K,
+[4.201s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/trajectory/trajectory.cpp:1[m[K:
+[4.201s] [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/factor/factor_common.h:55:57:[m[K [01;35m[Kwarning: [m[K‘[01m[KLocalParameterization[m[K’ is deprecated: LocalParameterizations will be removed from the Ceres Solver API in version 2.2.0. Use Manifolds instead. [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wdeprecated-declarations-Wdeprecated-declarations]8;;[m[K]
+[4.201s]    55 |             static ceres::LocalParameterization *Create([01;35m[K)[m[K
+[4.201s]       |                                                         [01;35m[K^[m[K
+[4.201s] In file included from [01m[K/usr/local/include/ceres/autodiff_local_parameterization.h:39[m[K,
+[4.202s]                  from [01m[K/usr/local/include/ceres/ceres.h:39[m[K,
+[4.202s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/utilies/common.h:3[m[K,
+[4.202s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/factor/factor_common.h:2[m[K,
+[4.202s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/factor/camera_factor.h:2[m[K,
+[4.202s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/trajectory/trajectory.h:2[m[K,
+[4.202s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/trajectory/trajectory.cpp:1[m[K:
+[4.202s] [01m[K/usr/local/include/ceres/local_parameterization.h:121:18:[m[K [01;36m[Knote: [m[Kdeclared here
+[4.202s]   121 |     CERES_EXPORT [01;36m[KLocalParameterization[m[K {
+[4.202s]       |                  [01;36m[K^~~~~~~~~~~~~~~~~~~~~[m[K
+[4.202s] In file included from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/factor/camera_factor.h:2[m[K,
+[4.202s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/trajectory/trajectory.h:2[m[K,
+[4.202s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/trajectory/trajectory.cpp:1[m[K:
+[4.202s] [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/factor/factor_common.h:[m[K In static member function ‘[01m[Kstatic ceres::LocalParameterization* lvio_2d::factor::so3_parameterization::Create()[m[K’:
+[4.202s] [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/factor/factor_common.h:57:36:[m[K [01;35m[Kwarning: [m[K‘[01m[Ktemplate<class Functor, int kGlobalSize, int kLocalSize> class ceres::AutoDiffLocalParameterization[m[K’ is deprecated: Use AutoDiffManifold instead. [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wdeprecated-declarations-Wdeprecated-declarations]8;;[m[K]
+[4.202s]    57 |                 return (new ceres::[01;35m[KAutoDiffLocalParameterization[m[K<so3_parameterization,
+[4.202s]       |                                    [01;35m[K^~~~~~~~~~~~~~~~~~~~~~~~~~~~~[m[K
+[4.202s] In file included from [01m[K/usr/local/include/ceres/ceres.h:39[m[K,
+[4.202s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/utilies/common.h:3[m[K,
+[4.202s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/factor/factor_common.h:2[m[K,
+[4.203s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/factor/camera_factor.h:2[m[K,
+[4.203s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/trajectory/trajectory.h:2[m[K,
+[4.203s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/trajectory/trajectory.cpp:1[m[K:
+[4.203s] [01m[K/usr/local/include/ceres/autodiff_local_parameterization.h:114:5:[m[K [01;36m[Knote: [m[Kdeclared here
+[4.203s]   114 |     [01;36m[KAutoDiffLocalParameterization[m[K : public LocalParameterization {
+[4.203s]       |     [01;36m[K^~~~~~~~~~~~~~~~~~~~~~~~~~~~~[m[K
+[4.206s] In file included from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/factor/camera_factor.h:2[m[K,
+[4.206s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/trajectory/trajectory.h:2[m[K,
+[4.206s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/trajectory/trajectory.cpp:1[m[K:
+[4.206s] [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/factor/factor_common.h:[m[K At global scope:
+[4.206s] [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/factor/factor_common.h:77:57:[m[K [01;35m[Kwarning: [m[K‘[01m[KLocalParameterization[m[K’ is deprecated: LocalParameterizations will be removed from the Ceres Solver API in version 2.2.0. Use Manifolds instead. [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wdeprecated-declarations-Wdeprecated-declarations]8;;[m[K]
+[4.206s]    77 |             static ceres::LocalParameterization *Create([01;35m[K)[m[K
+[4.206s]       |                                                         [01;35m[K^[m[K
+[4.206s] In file included from [01m[K/usr/local/include/ceres/autodiff_local_parameterization.h:39[m[K,
+[4.206s]                  from [01m[K/usr/local/include/ceres/ceres.h:39[m[K,
+[4.206s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/utilies/common.h:3[m[K,
+[4.206s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/factor/factor_common.h:2[m[K,
+[4.206s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/factor/camera_factor.h:2[m[K,
+[4.206s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/trajectory/trajectory.h:2[m[K,
+[4.206s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/trajectory/trajectory.cpp:1[m[K:
+[4.206s] [01m[K/usr/local/include/ceres/local_parameterization.h:121:18:[m[K [01;36m[Knote: [m[Kdeclared here
+[4.207s]   121 |     CERES_EXPORT [01;36m[KLocalParameterization[m[K {
+[4.207s]       |                  [01;36m[K^~~~~~~~~~~~~~~~~~~~~[m[K
+[4.207s] In file included from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/factor/camera_factor.h:2[m[K,
+[4.207s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/trajectory/trajectory.h:2[m[K,
+[4.207s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/trajectory/trajectory.cpp:1[m[K:
+[4.207s] [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/factor/factor_common.h:[m[K In static member function ‘[01m[Kstatic ceres::LocalParameterization* lvio_2d::factor::g_parameterization::Create()[m[K’:
+[4.207s] [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/factor/factor_common.h:79:36:[m[K [01;35m[Kwarning: [m[K‘[01m[Ktemplate<class Functor, int kGlobalSize, int kLocalSize> class ceres::AutoDiffLocalParameterization[m[K’ is deprecated: Use AutoDiffManifold instead. [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wdeprecated-declarations-Wdeprecated-declarations]8;;[m[K]
+[4.207s]    79 |                 return (new ceres::[01;35m[KAutoDiffLocalParameterization[m[K<g_parameterization,
+[4.207s]       |                                    [01;35m[K^~~~~~~~~~~~~~~~~~~~~~~~~~~~~[m[K
+[4.207s] In file included from [01m[K/usr/local/include/ceres/ceres.h:39[m[K,
+[4.207s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/utilies/common.h:3[m[K,
+[4.207s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/factor/factor_common.h:2[m[K,
+[4.207s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/factor/camera_factor.h:2[m[K,
+[4.207s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/trajectory/trajectory.h:2[m[K,
+[4.207s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/trajectory/trajectory.cpp:1[m[K:
+[4.207s] [01m[K/usr/local/include/ceres/autodiff_local_parameterization.h:114:5:[m[K [01;36m[Knote: [m[Kdeclared here
+[4.207s]   114 |     [01;36m[KAutoDiffLocalParameterization[m[K : public LocalParameterization {
+[4.207s]       |     [01;36m[K^~~~~~~~~~~~~~~~~~~~~~~~~~~~~[m[K
+[4.211s] In file included from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/factor/camera_factor.h:2[m[K,
+[4.211s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/factor/solver.h:2[m[K,
+[4.211s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/factor/solver.cpp:1[m[K:
+[4.212s] [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/factor/factor_common.h:55:57:[m[K [01;35m[Kwarning: [m[K‘[01m[KLocalParameterization[m[K’ is deprecated: LocalParameterizations will be removed from the Ceres Solver API in version 2.2.0. Use Manifolds instead. [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wdeprecated-declarations-Wdeprecated-declarations]8;;[m[K]
+[4.212s]    55 |             static ceres::LocalParameterization *Create([01;35m[K)[m[K
+[4.212s]       |                                                         [01;35m[K^[m[K
+[4.212s] In file included from [01m[K/usr/local/include/ceres/autodiff_local_parameterization.h:39[m[K,
+[4.212s]                  from [01m[K/usr/local/include/ceres/ceres.h:39[m[K,
+[4.212s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/utilies/common.h:3[m[K,
+[4.212s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/factor/factor_common.h:2[m[K,
+[4.212s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/factor/camera_factor.h:2[m[K,
+[4.212s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/factor/solver.h:2[m[K,
+[4.212s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/factor/solver.cpp:1[m[K:
+[4.212s] [01m[K/usr/local/include/ceres/local_parameterization.h:121:18:[m[K [01;36m[Knote: [m[Kdeclared here
+[4.212s]   121 |     CERES_EXPORT [01;36m[KLocalParameterization[m[K {
+[4.212s]       |                  [01;36m[K^~~~~~~~~~~~~~~~~~~~~[m[K
+[4.212s] In file included from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/factor/camera_factor.h:2[m[K,
+[4.212s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/factor/solver.h:2[m[K,
+[4.212s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/factor/solver.cpp:1[m[K:
+[4.212s] [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/factor/factor_common.h:[m[K In static member function ‘[01m[Kstatic ceres::LocalParameterization* lvio_2d::factor::so3_parameterization::Create()[m[K’:
+[4.212s] [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/factor/factor_common.h:57:36:[m[K [01;35m[Kwarning: [m[K‘[01m[Ktemplate<class Functor, int kGlobalSize, int kLocalSize> class ceres::AutoDiffLocalParameterization[m[K’ is deprecated: Use AutoDiffManifold instead. [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wdeprecated-declarations-Wdeprecated-declarations]8;;[m[K]
+[4.212s]    57 |                 return (new ceres::[01;35m[KAutoDiffLocalParameterization[m[K<so3_parameterization,
+[4.213s]       |                                    [01;35m[K^~~~~~~~~~~~~~~~~~~~~~~~~~~~~[m[K
+[4.213s] In file included from [01m[K/usr/local/include/ceres/ceres.h:39[m[K,
+[4.213s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/utilies/common.h:3[m[K,
+[4.213s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/factor/factor_common.h:2[m[K,
+[4.213s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/factor/camera_factor.h:2[m[K,
+[4.213s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/factor/solver.h:2[m[K,
+[4.213s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/factor/solver.cpp:1[m[K:
+[4.213s] [01m[K/usr/local/include/ceres/autodiff_local_parameterization.h:114:5:[m[K [01;36m[Knote: [m[Kdeclared here
+[4.213s]   114 |     [01;36m[KAutoDiffLocalParameterization[m[K : public LocalParameterization {
+[4.213s]       |     [01;36m[K^~~~~~~~~~~~~~~~~~~~~~~~~~~~~[m[K
+[4.216s] In file included from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/factor/camera_factor.h:2[m[K,
+[4.216s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/factor/solver.h:2[m[K,
+[4.216s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/factor/solver.cpp:1[m[K:
+[4.217s] [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/factor/factor_common.h:[m[K At global scope:
+[4.217s] [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/factor/factor_common.h:77:57:[m[K [01;35m[Kwarning: [m[K‘[01m[KLocalParameterization[m[K’ is deprecated: LocalParameterizations will be removed from the Ceres Solver API in version 2.2.0. Use Manifolds instead. [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wdeprecated-declarations-Wdeprecated-declarations]8;;[m[K]
+[4.217s]    77 |             static ceres::LocalParameterization *Create([01;35m[K)[m[K
+[4.217s]       |                                                         [01;35m[K^[m[K
+[4.217s] In file included from [01m[K/usr/local/include/ceres/autodiff_local_parameterization.h:39[m[K,
+[4.217s]                  from [01m[K/usr/local/include/ceres/ceres.h:39[m[K,
+[4.217s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/utilies/common.h:3[m[K,
+[4.217s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/factor/factor_common.h:2[m[K,
+[4.217s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/factor/camera_factor.h:2[m[K,
+[4.217s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/factor/solver.h:2[m[K,
+[4.217s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/factor/solver.cpp:1[m[K:
+[4.217s] [01m[K/usr/local/include/ceres/local_parameterization.h:121:18:[m[K [01;36m[Knote: [m[Kdeclared here
+[4.217s]   121 |     CERES_EXPORT [01;36m[KLocalParameterization[m[K {
+[4.217s]       |                  [01;36m[K^~~~~~~~~~~~~~~~~~~~~[m[K
+[4.217s] In file included from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/factor/camera_factor.h:2[m[K,
+[4.217s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/factor/solver.h:2[m[K,
+[4.217s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/factor/solver.cpp:1[m[K:
+[4.217s] [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/factor/factor_common.h:[m[K In static member function ‘[01m[Kstatic ceres::LocalParameterization* lvio_2d::factor::g_parameterization::Create()[m[K’:
+[4.218s] [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/factor/factor_common.h:79:36:[m[K [01;35m[Kwarning: [m[K‘[01m[Ktemplate<class Functor, int kGlobalSize, int kLocalSize> class ceres::AutoDiffLocalParameterization[m[K’ is deprecated: Use AutoDiffManifold instead. [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wdeprecated-declarations-Wdeprecated-declarations]8;;[m[K]
+[4.218s]    79 |                 return (new ceres::[01;35m[KAutoDiffLocalParameterization[m[K<g_parameterization,
+[4.218s]       |                                    [01;35m[K^~~~~~~~~~~~~~~~~~~~~~~~~~~~~[m[K
+[4.218s] In file included from [01m[K/usr/local/include/ceres/ceres.h:39[m[K,
+[4.218s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/utilies/common.h:3[m[K,
+[4.218s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/factor/factor_common.h:2[m[K,
+[4.218s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/factor/camera_factor.h:2[m[K,
+[4.218s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/factor/solver.h:2[m[K,
+[4.218s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/factor/solver.cpp:1[m[K:
+[4.218s] [01m[K/usr/local/include/ceres/autodiff_local_parameterization.h:114:5:[m[K [01;36m[Knote: [m[Kdeclared here
+[4.218s]   114 |     [01;36m[KAutoDiffLocalParameterization[m[K : public LocalParameterization {
+[4.218s]       |     [01;36m[K^~~~~~~~~~~~~~~~~~~~~~~~~~~~~[m[K
+[4.279s] In file included from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/factor/imu_preintegraption.h:2[m[K,
+[4.279s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/trajectory/trajectory_type.h:2[m[K,
+[4.279s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/trajectory/keyframe_manager.h:3[m[K,
+[4.279s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/trajectory/keyframe_manager.cpp:1[m[K:
+[4.279s] [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/factor/factor_common.h:55:57:[m[K [01;35m[Kwarning: [m[K‘[01m[KLocalParameterization[m[K’ is deprecated: LocalParameterizations will be removed from the Ceres Solver API in version 2.2.0. Use Manifolds instead. [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wdeprecated-declarations-Wdeprecated-declarations]8;;[m[K]
+[4.279s]    55 |             static ceres::LocalParameterization *Create([01;35m[K)[m[K
+[4.279s]       |                                                         [01;35m[K^[m[K
+[4.280s] In file included from [01m[K/usr/local/include/ceres/autodiff_local_parameterization.h:39[m[K,
+[4.280s]                  from [01m[K/usr/local/include/ceres/ceres.h:39[m[K,
+[4.280s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/utilies/common.h:3[m[K,
+[4.280s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/factor/factor_common.h:2[m[K,
+[4.280s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/factor/imu_preintegraption.h:2[m[K,
+[4.280s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/trajectory/trajectory_type.h:2[m[K,
+[4.280s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/trajectory/keyframe_manager.h:3[m[K,
+[4.280s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/trajectory/keyframe_manager.cpp:1[m[K:
+[4.280s] [01m[K/usr/local/include/ceres/local_parameterization.h:121:18:[m[K [01;36m[Knote: [m[Kdeclared here
+[4.280s]   121 |     CERES_EXPORT [01;36m[KLocalParameterization[m[K {
+[4.280s]       |                  [01;36m[K^~~~~~~~~~~~~~~~~~~~~[m[K
+[4.280s] In file included from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/factor/imu_preintegraption.h:2[m[K,
+[4.280s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/trajectory/trajectory_type.h:2[m[K,
+[4.280s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/trajectory/keyframe_manager.h:3[m[K,
+[4.280s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/trajectory/keyframe_manager.cpp:1[m[K:
+[4.280s] [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/factor/factor_common.h:[m[K In static member function ‘[01m[Kstatic ceres::LocalParameterization* lvio_2d::factor::so3_parameterization::Create()[m[K’:
+[4.280s] [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/factor/factor_common.h:57:36:[m[K [01;35m[Kwarning: [m[K‘[01m[Ktemplate<class Functor, int kGlobalSize, int kLocalSize> class ceres::AutoDiffLocalParameterization[m[K’ is deprecated: Use AutoDiffManifold instead. [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wdeprecated-declarations-Wdeprecated-declarations]8;;[m[K]
+[4.280s]    57 |                 return (new ceres::[01;35m[KAutoDiffLocalParameterization[m[K<so3_parameterization,
+[4.280s]       |                                    [01;35m[K^~~~~~~~~~~~~~~~~~~~~~~~~~~~~[m[K
+[4.281s] In file included from [01m[K/usr/local/include/ceres/ceres.h:39[m[K,
+[4.281s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/utilies/common.h:3[m[K,
+[4.281s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/factor/factor_common.h:2[m[K,
+[4.281s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/factor/imu_preintegraption.h:2[m[K,
+[4.281s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/trajectory/trajectory_type.h:2[m[K,
+[4.281s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/trajectory/keyframe_manager.h:3[m[K,
+[4.281s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/trajectory/keyframe_manager.cpp:1[m[K:
+[4.281s] [01m[K/usr/local/include/ceres/autodiff_local_parameterization.h:114:5:[m[K [01;36m[Knote: [m[Kdeclared here
+[4.281s]   114 |     [01;36m[KAutoDiffLocalParameterization[m[K : public LocalParameterization {
+[4.281s]       |     [01;36m[K^~~~~~~~~~~~~~~~~~~~~~~~~~~~~[m[K
+[4.309s] In file included from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/factor/imu_preintegraption.h:2[m[K,
+[4.309s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/trajectory/trajectory_type.h:2[m[K,
+[4.309s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/trajectory/keyframe_manager.h:3[m[K,
+[4.309s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/trajectory/keyframe_manager.cpp:1[m[K:
+[4.309s] [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/factor/factor_common.h:[m[K At global scope:
+[4.309s] [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/factor/factor_common.h:77:57:[m[K [01;35m[Kwarning: [m[K‘[01m[KLocalParameterization[m[K’ is deprecated: LocalParameterizations will be removed from the Ceres Solver API in version 2.2.0. Use Manifolds instead. [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wdeprecated-declarations-Wdeprecated-declarations]8;;[m[K]
+[4.309s]    77 |             static ceres::LocalParameterization *Create([01;35m[K)[m[K
+[4.309s]       |                                                         [01;35m[K^[m[K
+[4.309s] In file included from [01m[K/usr/local/include/ceres/autodiff_local_parameterization.h:39[m[K,
+[4.309s]                  from [01m[K/usr/local/include/ceres/ceres.h:39[m[K,
+[4.309s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/utilies/common.h:3[m[K,
+[4.309s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/factor/factor_common.h:2[m[K,
+[4.309s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/factor/imu_preintegraption.h:2[m[K,
+[4.309s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/trajectory/trajectory_type.h:2[m[K,
+[4.310s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/trajectory/keyframe_manager.h:3[m[K,
+[4.310s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/trajectory/keyframe_manager.cpp:1[m[K:
+[4.310s] [01m[K/usr/local/include/ceres/local_parameterization.h:121:18:[m[K [01;36m[Knote: [m[Kdeclared here
+[4.310s]   121 |     CERES_EXPORT [01;36m[KLocalParameterization[m[K {
+[4.310s]       |                  [01;36m[K^~~~~~~~~~~~~~~~~~~~~[m[K
+[4.310s] In file included from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/factor/imu_preintegraption.h:2[m[K,
+[4.310s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/trajectory/trajectory_type.h:2[m[K,
+[4.310s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/trajectory/keyframe_manager.h:3[m[K,
+[4.310s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/trajectory/keyframe_manager.cpp:1[m[K:
+[4.310s] [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/factor/factor_common.h:[m[K In static member function ‘[01m[Kstatic ceres::LocalParameterization* lvio_2d::factor::g_parameterization::Create()[m[K’:
+[4.310s] [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/factor/factor_common.h:79:36:[m[K [01;35m[Kwarning: [m[K‘[01m[Ktemplate<class Functor, int kGlobalSize, int kLocalSize> class ceres::AutoDiffLocalParameterization[m[K’ is deprecated: Use AutoDiffManifold instead. [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wdeprecated-declarations-Wdeprecated-declarations]8;;[m[K]
+[4.310s]    79 |                 return (new ceres::[01;35m[KAutoDiffLocalParameterization[m[K<g_parameterization,
+[4.310s]       |                                    [01;35m[K^~~~~~~~~~~~~~~~~~~~~~~~~~~~~[m[K
+[4.310s] In file included from [01m[K/usr/local/include/ceres/ceres.h:39[m[K,
+[4.310s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/utilies/common.h:3[m[K,
+[4.310s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/factor/factor_common.h:2[m[K,
+[4.310s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/factor/imu_preintegraption.h:2[m[K,
+[4.310s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/trajectory/trajectory_type.h:2[m[K,
+[4.311s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/trajectory/keyframe_manager.h:3[m[K,
+[4.311s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/trajectory/keyframe_manager.cpp:1[m[K:
+[4.311s] [01m[K/usr/local/include/ceres/autodiff_local_parameterization.h:114:5:[m[K [01;36m[Knote: [m[Kdeclared here
+[4.311s]   114 |     [01;36m[KAutoDiffLocalParameterization[m[K : public LocalParameterization {
+[4.311s]       |     [01;36m[K^~~~~~~~~~~~~~~~~~~~~~~~~~~~~[m[K
+[6.168s] [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/factor/solver.cpp:[m[K In member function ‘[01m[Kvoid lvio_2d::solver::do_init_solve(std::deque<std::shared_ptr<lvio_2d::frame_info> >&, lvio_2d::feature_manger&, bool)[m[K’:
+[6.168s] [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/factor/solver.cpp:55:39:[m[K [01;35m[Kwarning: [m[K‘[01m[KLocalParameterization[m[K’ is deprecated: LocalParameterizations will be removed from the Ceres Solver API in version 2.2.0. Use Manifolds instead. [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wdeprecated-declarations-Wdeprecated-declarations]8;;[m[K]
+[6.168s]    55 |         ceres::LocalParameterization *[01;35m[Kso3_parameterization[m[K =
+[6.168s]       |                                       [01;35m[K^~~~~~~~~~~~~~~~~~~~[m[K
+[6.168s] In file included from [01m[K/usr/local/include/ceres/autodiff_local_parameterization.h:39[m[K,
+[6.168s]                  from [01m[K/usr/local/include/ceres/ceres.h:39[m[K,
+[6.168s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/utilies/common.h:3[m[K,
+[6.168s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/factor/factor_common.h:2[m[K,
+[6.168s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/factor/camera_factor.h:2[m[K,
+[6.168s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/factor/solver.h:2[m[K,
+[6.169s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/factor/solver.cpp:1[m[K:
+[6.169s] [01m[K/usr/local/include/ceres/local_parameterization.h:121:18:[m[K [01;36m[Knote: [m[Kdeclared here
+[6.169s]   121 |     CERES_EXPORT [01;36m[KLocalParameterization[m[K {
+[6.169s]       |                  [01;36m[K^~~~~~~~~~~~~~~~~~~~~[m[K
+[6.176s] [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/factor/solver.cpp:81:48:[m[K [01;35m[Kwarning: [m[K‘[01m[Kvoid ceres::Problem::SetParameterization(double*, ceres::LocalParameterization*)[m[K’ is deprecated: LocalParameterizations are deprecated. Use SetManifold instead. [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wdeprecated-declarations-Wdeprecated-declarations]8;;[m[K]
+[6.176s]    81 |                     [01;35m[Kproblem.SetParameterization(frame_infos[iter->frame_indexs[i]]->q.data(), so3_parameterization)[m[K;
+[6.176s]       |                     [01;35m[K~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[m[K
+[6.176s] In file included from [01m[K/usr/local/include/ceres/ceres.h:66[m[K,
+[6.176s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/utilies/common.h:3[m[K,
+[6.176s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/factor/factor_common.h:2[m[K,
+[6.176s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/factor/camera_factor.h:2[m[K,
+[6.176s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/factor/solver.h:2[m[K,
+[6.176s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/factor/solver.cpp:1[m[K:
+[6.176s] [01m[K/usr/local/include/ceres/problem.h:395:8:[m[K [01;36m[Knote: [m[Kdeclared here
+[6.176s]   395 |   void [01;36m[KSetParameterization[m[K(double* values,
+[6.176s]       |        [01;36m[K^~~~~~~~~~~~~~~~~~~[m[K
+[6.179s] [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/factor/solver.cpp:108:52:[m[K [01;35m[Kwarning: [m[K‘[01m[Kvoid ceres::Problem::SetParameterization(double*, ceres::LocalParameterization*)[m[K’ is deprecated: LocalParameterizations are deprecated. Use SetManifold instead. [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wdeprecated-declarations-Wdeprecated-declarations]8;;[m[K]
+[6.179s]   108 |                         [01;35m[Kproblem.SetParameterization(frame_infos[index1]->q.data(), so3_parameterization)[m[K;
+[6.179s]       |                         [01;35m[K~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[m[K
+[6.179s] In file included from [01m[K/usr/local/include/ceres/ceres.h:66[m[K,
+[6.179s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/utilies/common.h:3[m[K,
+[6.179s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/factor/factor_common.h:2[m[K,
+[6.179s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/factor/camera_factor.h:2[m[K,
+[6.179s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/factor/solver.h:2[m[K,
+[6.179s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/factor/solver.cpp:1[m[K:
+[6.179s] [01m[K/usr/local/include/ceres/problem.h:395:8:[m[K [01;36m[Knote: [m[Kdeclared here
+[6.180s]   395 |   void [01;36m[KSetParameterization[m[K(double* values,
+[6.180s]       |        [01;36m[K^~~~~~~~~~~~~~~~~~~[m[K
+[6.180s] [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/factor/solver.cpp:109:52:[m[K [01;35m[Kwarning: [m[K‘[01m[Kvoid ceres::Problem::SetParameterization(double*, ceres::LocalParameterization*)[m[K’ is deprecated: LocalParameterizations are deprecated. Use SetManifold instead. [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wdeprecated-declarations-Wdeprecated-declarations]8;;[m[K]
+[6.180s]   109 |                         [01;35m[Kproblem.SetParameterization(frame_infos[index2]->q.data(), so3_parameterization)[m[K;
+[6.180s]       |                         [01;35m[K~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[m[K
+[6.180s] In file included from [01m[K/usr/local/include/ceres/ceres.h:66[m[K,
+[6.180s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/utilies/common.h:3[m[K,
+[6.180s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/factor/factor_common.h:2[m[K,
+[6.180s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/factor/camera_factor.h:2[m[K,
+[6.180s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/factor/solver.h:2[m[K,
+[6.180s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/factor/solver.cpp:1[m[K:
+[6.180s] [01m[K/usr/local/include/ceres/problem.h:395:8:[m[K [01;36m[Knote: [m[Kdeclared here
+[6.180s]   395 |   void [01;36m[KSetParameterization[m[K(double* values,
+[6.180s]       |        [01;36m[K^~~~~~~~~~~~~~~~~~~[m[K
+[6.180s] [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/factor/solver.cpp:124:40:[m[K [01;35m[Kwarning: [m[K‘[01m[Kvoid ceres::Problem::SetParameterization(double*, ceres::LocalParameterization*)[m[K’ is deprecated: LocalParameterizations are deprecated. Use SetManifold instead. [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wdeprecated-declarations-Wdeprecated-declarations]8;;[m[K]
+[6.180s]   124 |             [01;35m[Kproblem.SetParameterization(frame_infos[i - 1]->q.data(), so3_parameterization)[m[K;
+[6.180s]       |             [01;35m[K~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[m[K
+[6.180s] In file included from [01m[K/usr/local/include/ceres/ceres.h:66[m[K,
+[6.181s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/utilies/common.h:3[m[K,
+[6.181s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/factor/factor_common.h:2[m[K,
+[6.181s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/factor/camera_factor.h:2[m[K,
+[6.181s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/factor/solver.h:2[m[K,
+[6.181s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/factor/solver.cpp:1[m[K:
+[6.181s] [01m[K/usr/local/include/ceres/problem.h:395:8:[m[K [01;36m[Knote: [m[Kdeclared here
+[6.181s]   395 |   void [01;36m[KSetParameterization[m[K(double* values,
+[6.181s]       |        [01;36m[K^~~~~~~~~~~~~~~~~~~[m[K
+[6.181s] [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/factor/solver.cpp:125:40:[m[K [01;35m[Kwarning: [m[K‘[01m[Kvoid ceres::Problem::SetParameterization(double*, ceres::LocalParameterization*)[m[K’ is deprecated: LocalParameterizations are deprecated. Use SetManifold instead. [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wdeprecated-declarations-Wdeprecated-declarations]8;;[m[K]
+[6.181s]   125 |             [01;35m[Kproblem.SetParameterization(frame_infos[i]->q.data(), so3_parameterization)[m[K;
+[6.181s]       |             [01;35m[K~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[m[K
+[6.181s] In file included from [01m[K/usr/local/include/ceres/ceres.h:66[m[K,
+[6.181s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/utilies/common.h:3[m[K,
+[6.181s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/factor/factor_common.h:2[m[K,
+[6.181s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/factor/camera_factor.h:2[m[K,
+[6.181s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/factor/solver.h:2[m[K,
+[6.181s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/factor/solver.cpp:1[m[K:
+[6.181s] [01m[K/usr/local/include/ceres/problem.h:395:8:[m[K [01;36m[Knote: [m[Kdeclared here
+[6.182s]   395 |   void [01;36m[KSetParameterization[m[K(double* values,
+[6.182s]       |        [01;36m[K^~~~~~~~~~~~~~~~~~~[m[K
+[6.182s] [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/factor/solver.cpp:136:40:[m[K [01;35m[Kwarning: [m[K‘[01m[Kvoid ceres::Problem::SetParameterization(double*, ceres::LocalParameterization*)[m[K’ is deprecated: LocalParameterizations are deprecated. Use SetManifold instead. [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wdeprecated-declarations-Wdeprecated-declarations]8;;[m[K]
+[6.182s]   136 |             [01;35m[Kproblem.SetParameterization(frame_infos[i - 1]->q.data(), so3_parameterization)[m[K;
+[6.182s]       |             [01;35m[K~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[m[K
+[6.182s] In file included from [01m[K/usr/local/include/ceres/ceres.h:66[m[K,
+[6.182s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/utilies/common.h:3[m[K,
+[6.182s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/factor/factor_common.h:2[m[K,
+[6.182s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/factor/camera_factor.h:2[m[K,
+[6.182s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/factor/solver.h:2[m[K,
+[6.182s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/factor/solver.cpp:1[m[K:
+[6.182s] [01m[K/usr/local/include/ceres/problem.h:395:8:[m[K [01;36m[Knote: [m[Kdeclared here
+[6.182s]   395 |   void [01;36m[KSetParameterization[m[K(double* values,
+[6.182s]       |        [01;36m[K^~~~~~~~~~~~~~~~~~~[m[K
+[6.182s] [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/factor/solver.cpp:137:40:[m[K [01;35m[Kwarning: [m[K‘[01m[Kvoid ceres::Problem::SetParameterization(double*, ceres::LocalParameterization*)[m[K’ is deprecated: LocalParameterizations are deprecated. Use SetManifold instead. [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wdeprecated-declarations-Wdeprecated-declarations]8;;[m[K]
+[6.182s]   137 |             [01;35m[Kproblem.SetParameterization(frame_infos[i]->q.data(), so3_parameterization)[m[K;
+[6.182s]       |             [01;35m[K~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[m[K
+[6.182s] In file included from [01m[K/usr/local/include/ceres/ceres.h:66[m[K,
+[6.182s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/utilies/common.h:3[m[K,
+[6.183s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/factor/factor_common.h:2[m[K,
+[6.183s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/factor/camera_factor.h:2[m[K,
+[6.183s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/factor/solver.h:2[m[K,
+[6.183s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/factor/solver.cpp:1[m[K:
+[6.183s] [01m[K/usr/local/include/ceres/problem.h:395:8:[m[K [01;36m[Knote: [m[Kdeclared here
+[6.183s]   395 |   void [01;36m[KSetParameterization[m[K(double* values,
+[6.183s]       |        [01;36m[K^~~~~~~~~~~~~~~~~~~[m[K
+[6.183s] [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/factor/solver.cpp:157:44:[m[K [01;35m[Kwarning: [m[K‘[01m[Kvoid ceres::Problem::SetParameterization(double*, ceres::LocalParameterization*)[m[K’ is deprecated: LocalParameterizations are deprecated. Use SetManifold instead. [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wdeprecated-declarations-Wdeprecated-declarations]8;;[m[K]
+[6.183s]   157 |                 [01;35m[Kproblem.SetParameterization(frame_infos[j]->q.data(), so3_parameterization)[m[K;
+[6.183s]       |                 [01;35m[K~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[m[K
+[6.183s] In file included from [01m[K/usr/local/include/ceres/ceres.h:66[m[K,
+[6.183s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/utilies/common.h:3[m[K,
+[6.183s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/factor/factor_common.h:2[m[K,
+[6.183s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/factor/camera_factor.h:2[m[K,
+[6.183s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/factor/solver.h:2[m[K,
+[6.183s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/factor/solver.cpp:1[m[K:
+[6.183s] [01m[K/usr/local/include/ceres/problem.h:395:8:[m[K [01;36m[Knote: [m[Kdeclared here
+[6.183s]   395 |   void [01;36m[KSetParameterization[m[K(double* values,
+[6.183s]       |        [01;36m[K^~~~~~~~~~~~~~~~~~~[m[K
+[6.202s] [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/trajectory/keyframe_manager.cpp:[m[K In function ‘[01m[KEigen::Isometry3d lvio_2d::ICP_solve_by_opt(std::vector<Eigen::Matrix<double, 3, 1> >&, std::vector<Eigen::Matrix<double, 3, 1> >&, const Isometry3d&)[m[K’:
+[6.202s] [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/trajectory/keyframe_manager.cpp:500:39:[m[K [01;35m[Kwarning: [m[K‘[01m[KLocalParameterization[m[K’ is deprecated: LocalParameterizations will be removed from the Ceres Solver API in version 2.2.0. Use Manifolds instead. [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wdeprecated-declarations-Wdeprecated-declarations]8;;[m[K]
+[6.202s]   500 |         ceres::LocalParameterization *[01;35m[Kso3_parameterization[m[K =
+[6.203s]       |                                       [01;35m[K^~~~~~~~~~~~~~~~~~~~[m[K
+[6.203s] In file included from [01m[K/usr/local/include/ceres/autodiff_local_parameterization.h:39[m[K,
+[6.203s]                  from [01m[K/usr/local/include/ceres/ceres.h:39[m[K,
+[6.203s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/utilies/common.h:3[m[K,
+[6.203s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/factor/factor_common.h:2[m[K,
+[6.203s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/factor/imu_preintegraption.h:2[m[K,
+[6.203s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/trajectory/trajectory_type.h:2[m[K,
+[6.203s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/trajectory/keyframe_manager.h:3[m[K,
+[6.203s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/trajectory/keyframe_manager.cpp:1[m[K:
+[6.203s] [01m[K/usr/local/include/ceres/local_parameterization.h:121:18:[m[K [01;36m[Knote: [m[Kdeclared here
+[6.203s]   121 |     CERES_EXPORT [01;36m[KLocalParameterization[m[K {
+[6.203s]       |                  [01;36m[K^~~~~~~~~~~~~~~~~~~~~[m[K
+[6.203s] [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/trajectory/keyframe_manager.cpp:512:36:[m[K [01;35m[Kwarning: [m[K‘[01m[Kvoid ceres::Problem::SetParameterization(double*, ceres::LocalParameterization*)[m[K’ is deprecated: LocalParameterizations are deprecated. Use SetManifold instead. [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wdeprecated-declarations-Wdeprecated-declarations]8;;[m[K]
+[6.203s]   512 |         [01;35m[Kproblem.SetParameterization(q.data(), so3_parameterization)[m[K;
+[6.203s]       |         [01;35m[K~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[m[K
+[6.203s] In file included from [01m[K/usr/local/include/ceres/ceres.h:66[m[K,
+[6.203s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/utilies/common.h:3[m[K,
+[6.203s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/factor/factor_common.h:2[m[K,
+[6.204s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/factor/imu_preintegraption.h:2[m[K,
+[6.204s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/trajectory/trajectory_type.h:2[m[K,
+[6.204s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/trajectory/keyframe_manager.h:3[m[K,
+[6.204s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/trajectory/keyframe_manager.cpp:1[m[K:
+[6.204s] [01m[K/usr/local/include/ceres/problem.h:395:8:[m[K [01;36m[Knote: [m[Kdeclared here
+[6.204s]   395 |   void [01;36m[KSetParameterization[m[K(double* values,
+[6.204s]       |        [01;36m[K^~~~~~~~~~~~~~~~~~~[m[K
+[6.211s] [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/trajectory/keyframe_manager.cpp:[m[K In member function ‘[01m[Kvoid lvio_2d::keyframe_manager::solve()[m[K’:
+[6.211s] [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/trajectory/keyframe_manager.cpp:702:39:[m[K [01;35m[Kwarning: [m[K‘[01m[KLocalParameterization[m[K’ is deprecated: LocalParameterizations will be removed from the Ceres Solver API in version 2.2.0. Use Manifolds instead. [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wdeprecated-declarations-Wdeprecated-declarations]8;;[m[K]
+[6.211s]   702 |         ceres::LocalParameterization *[01;35m[Kso3_parameterization[m[K =
+[6.211s]       |                                       [01;35m[K^~~~~~~~~~~~~~~~~~~~[m[K
+[6.211s] In file included from [01m[K/usr/local/include/ceres/autodiff_local_parameterization.h:39[m[K,
+[6.211s]                  from [01m[K/usr/local/include/ceres/ceres.h:39[m[K,
+[6.211s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/utilies/common.h:3[m[K,
+[6.211s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/factor/factor_common.h:2[m[K,
+[6.211s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/factor/imu_preintegraption.h:2[m[K,
+[6.211s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/trajectory/trajectory_type.h:2[m[K,
+[6.211s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/trajectory/keyframe_manager.h:3[m[K,
+[6.211s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/trajectory/keyframe_manager.cpp:1[m[K:
+[6.211s] [01m[K/usr/local/include/ceres/local_parameterization.h:121:18:[m[K [01;36m[Knote: [m[Kdeclared here
+[6.211s]   121 |     CERES_EXPORT [01;36m[KLocalParameterization[m[K {
+[6.212s]       |                  [01;36m[K^~~~~~~~~~~~~~~~~~~~~[m[K
+[6.212s] [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/trajectory/keyframe_manager.cpp:720:40:[m[K [01;35m[Kwarning: [m[K‘[01m[Kvoid ceres::Problem::SetParameterization(double*, ceres::LocalParameterization*)[m[K’ is deprecated: LocalParameterizations are deprecated. Use SetManifold instead. [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wdeprecated-declarations-Wdeprecated-declarations]8;;[m[K]
+[6.212s]   720 |             [01;35m[Kproblem.SetParameterization(keyframe_queue[index1]->q.data(), so3_parameterization)[m[K;
+[6.212s]       |             [01;35m[K~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[m[K
+[6.212s] In file included from [01m[K/usr/local/include/ceres/ceres.h:66[m[K,
+[6.212s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/utilies/common.h:3[m[K,
+[6.212s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/factor/factor_common.h:2[m[K,
+[6.212s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/factor/imu_preintegraption.h:2[m[K,
+[6.212s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/trajectory/trajectory_type.h:2[m[K,
+[6.212s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/trajectory/keyframe_manager.h:3[m[K,
+[6.212s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/trajectory/keyframe_manager.cpp:1[m[K:
+[6.212s] [01m[K/usr/local/include/ceres/problem.h:395:8:[m[K [01;36m[Knote: [m[Kdeclared here
+[6.212s]   395 |   void [01;36m[KSetParameterization[m[K(double* values,
+[6.212s]       |        [01;36m[K^~~~~~~~~~~~~~~~~~~[m[K
+[6.212s] [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/trajectory/keyframe_manager.cpp:721:40:[m[K [01;35m[Kwarning: [m[K‘[01m[Kvoid ceres::Problem::SetParameterization(double*, ceres::LocalParameterization*)[m[K’ is deprecated: LocalParameterizations are deprecated. Use SetManifold instead. [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wdeprecated-declarations-Wdeprecated-declarations]8;;[m[K]
+[6.212s]   721 |             [01;35m[Kproblem.SetParameterization(keyframe_queue[index2]->q.data(), so3_parameterization)[m[K;
+[6.213s]       |             [01;35m[K~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[m[K
+[6.213s] In file included from [01m[K/usr/local/include/ceres/ceres.h:66[m[K,
+[6.213s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/utilies/common.h:3[m[K,
+[6.213s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/factor/factor_common.h:2[m[K,
+[6.213s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/factor/imu_preintegraption.h:2[m[K,
+[6.213s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/trajectory/trajectory_type.h:2[m[K,
+[6.213s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/trajectory/keyframe_manager.h:3[m[K,
+[6.213s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/trajectory/keyframe_manager.cpp:1[m[K:
+[6.213s] [01m[K/usr/local/include/ceres/problem.h:395:8:[m[K [01;36m[Knote: [m[Kdeclared here
+[6.213s]   395 |   void [01;36m[KSetParameterization[m[K(double* values,
+[6.213s]       |        [01;36m[K^~~~~~~~~~~~~~~~~~~[m[K
+[6.213s] [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/trajectory/keyframe_manager.cpp:741:40:[m[K [01;35m[Kwarning: [m[K‘[01m[Kvoid ceres::Problem::SetParameterization(double*, ceres::LocalParameterization*)[m[K’ is deprecated: LocalParameterizations are deprecated. Use SetManifold instead. [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wdeprecated-declarations-Wdeprecated-declarations]8;;[m[K]
+[6.213s]   741 |             [01;35m[Kproblem.SetParameterization(keyframe_queue[index1]->q.data(), so3_parameterization)[m[K;
+[6.213s]       |             [01;35m[K~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[m[K
+[6.213s] In file included from [01m[K/usr/local/include/ceres/ceres.h:66[m[K,
+[6.213s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/utilies/common.h:3[m[K,
+[6.213s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/factor/factor_common.h:2[m[K,
+[6.213s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/factor/imu_preintegraption.h:2[m[K,
+[6.214s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/trajectory/trajectory_type.h:2[m[K,
+[6.214s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/trajectory/keyframe_manager.h:3[m[K,
+[6.214s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/trajectory/keyframe_manager.cpp:1[m[K:
+[6.214s] [01m[K/usr/local/include/ceres/problem.h:395:8:[m[K [01;36m[Knote: [m[Kdeclared here
+[6.214s]   395 |   void [01;36m[KSetParameterization[m[K(double* values,
+[6.214s]       |        [01;36m[K^~~~~~~~~~~~~~~~~~~[m[K
+[6.214s] [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/trajectory/keyframe_manager.cpp:742:40:[m[K [01;35m[Kwarning: [m[K‘[01m[Kvoid ceres::Problem::SetParameterization(double*, ceres::LocalParameterization*)[m[K’ is deprecated: LocalParameterizations are deprecated. Use SetManifold instead. [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wdeprecated-declarations-Wdeprecated-declarations]8;;[m[K]
+[6.214s]   742 |             [01;35m[Kproblem.SetParameterization(keyframe_queue[index2]->q.data(), so3_parameterization)[m[K;
+[6.214s]       |             [01;35m[K~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[m[K
+[6.214s] In file included from [01m[K/usr/local/include/ceres/ceres.h:66[m[K,
+[6.214s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/utilies/common.h:3[m[K,
+[6.214s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/factor/factor_common.h:2[m[K,
+[6.214s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/factor/imu_preintegraption.h:2[m[K,
+[6.214s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/trajectory/trajectory_type.h:2[m[K,
+[6.214s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/trajectory/keyframe_manager.h:3[m[K,
+[6.214s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/trajectory/keyframe_manager.cpp:1[m[K:
+[6.214s] [01m[K/usr/local/include/ceres/problem.h:395:8:[m[K [01;36m[Knote: [m[Kdeclared here
+[6.214s]   395 |   void [01;36m[KSetParameterization[m[K(double* values,
+[6.214s]       |        [01;36m[K^~~~~~~~~~~~~~~~~~~[m[K
+[6.505s] [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/factor/solver.cpp:[m[K In member function ‘[01m[Kvoid lvio_2d::solver::solve(std::deque<std::shared_ptr<lvio_2d::frame_info> >&, lvio_2d::feature_manger&)[m[K’:
+[6.506s] [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/factor/solver.cpp:636:39:[m[K [01;35m[Kwarning: [m[K‘[01m[KLocalParameterization[m[K’ is deprecated: LocalParameterizations will be removed from the Ceres Solver API in version 2.2.0. Use Manifolds instead. [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wdeprecated-declarations-Wdeprecated-declarations]8;;[m[K]
+[6.506s]   636 |         ceres::LocalParameterization *[01;35m[Kso3_parameterization[m[K =
+[6.506s]       |                                       [01;35m[K^~~~~~~~~~~~~~~~~~~~[m[K
+[6.506s] In file included from [01m[K/usr/local/include/ceres/autodiff_local_parameterization.h:39[m[K,
+[6.506s]                  from [01m[K/usr/local/include/ceres/ceres.h:39[m[K,
+[6.506s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/utilies/common.h:3[m[K,
+[6.506s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/factor/factor_common.h:2[m[K,
+[6.506s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/factor/camera_factor.h:2[m[K,
+[6.506s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/factor/solver.h:2[m[K,
+[6.506s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/factor/solver.cpp:1[m[K:
+[6.506s] [01m[K/usr/local/include/ceres/local_parameterization.h:121:18:[m[K [01;36m[Knote: [m[Kdeclared here
+[6.506s]   121 |     CERES_EXPORT [01;36m[KLocalParameterization[m[K {
+[6.506s]       |                  [01;36m[K^~~~~~~~~~~~~~~~~~~~~[m[K
+[6.507s] [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/factor/solver.cpp:664:44:[m[K [01;35m[Kwarning: [m[K‘[01m[Kvoid ceres::Problem::SetParameterization(double*, ceres::LocalParameterization*)[m[K’ is deprecated: LocalParameterizations are deprecated. Use SetManifold instead. [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wdeprecated-declarations-Wdeprecated-declarations]8;;[m[K]
+[6.507s]   664 |                 [01;35m[Kproblem.SetParameterization(frame_infos[iter->frame_indexs[i]]->q.data(), so3_parameterization)[m[K;
+[6.507s]       |                 [01;35m[K~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[m[K
+[6.507s] In file included from [01m[K/usr/local/include/ceres/ceres.h:66[m[K,
+[6.508s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/utilies/common.h:3[m[K,
+[6.508s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/factor/factor_common.h:2[m[K,
+[6.508s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/factor/camera_factor.h:2[m[K,
+[6.508s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/factor/solver.h:2[m[K,
+[6.508s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/factor/solver.cpp:1[m[K:
+[6.508s] [01m[K/usr/local/include/ceres/problem.h:395:8:[m[K [01;36m[Knote: [m[Kdeclared here
+[6.508s]   395 |   void [01;36m[KSetParameterization[m[K(double* values,
+[6.508s]       |        [01;36m[K^~~~~~~~~~~~~~~~~~~[m[K
+[6.508s] [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/factor/solver.cpp:692:52:[m[K [01;35m[Kwarning: [m[K‘[01m[Kvoid ceres::Problem::SetParameterization(double*, ceres::LocalParameterization*)[m[K’ is deprecated: LocalParameterizations are deprecated. Use SetManifold instead. [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wdeprecated-declarations-Wdeprecated-declarations]8;;[m[K]
+[6.508s]   692 |                         [01;35m[Kproblem.SetParameterization(frame_infos[i]->laser_match_ptr->q1.data(), so3_parameterization)[m[K;
+[6.508s]       |                         [01;35m[K~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[m[K
+[6.509s] In file included from [01m[K/usr/local/include/ceres/ceres.h:66[m[K,
+[6.509s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/utilies/common.h:3[m[K,
+[6.509s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/factor/factor_common.h:2[m[K,
+[6.509s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/factor/camera_factor.h:2[m[K,
+[6.509s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/factor/solver.h:2[m[K,
+[6.509s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/factor/solver.cpp:1[m[K:
+[6.509s] [01m[K/usr/local/include/ceres/problem.h:395:8:[m[K [01;36m[Knote: [m[Kdeclared here
+[6.509s]   395 |   void [01;36m[KSetParameterization[m[K(double* values,
+[6.509s]       |        [01;36m[K^~~~~~~~~~~~~~~~~~~[m[K
+[6.509s] [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/factor/solver.cpp:694:52:[m[K [01;35m[Kwarning: [m[K‘[01m[Kvoid ceres::Problem::SetParameterization(double*, ceres::LocalParameterization*)[m[K’ is deprecated: LocalParameterizations are deprecated. Use SetManifold instead. [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wdeprecated-declarations-Wdeprecated-declarations]8;;[m[K]
+[6.509s]   694 |                         [01;35m[Kproblem.SetParameterization(frame_infos[i]->q.data(), so3_parameterization)[m[K;
+[6.509s]       |                         [01;35m[K~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[m[K
+[6.509s] In file included from [01m[K/usr/local/include/ceres/ceres.h:66[m[K,
+[6.509s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/utilies/common.h:3[m[K,
+[6.509s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/factor/factor_common.h:2[m[K,
+[6.509s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/factor/camera_factor.h:2[m[K,
+[6.509s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/factor/solver.h:2[m[K,
+[6.510s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/factor/solver.cpp:1[m[K:
+[6.510s] [01m[K/usr/local/include/ceres/problem.h:395:8:[m[K [01;36m[Knote: [m[Kdeclared here
+[6.510s]   395 |   void [01;36m[KSetParameterization[m[K(double* values,
+[6.510s]       |        [01;36m[K^~~~~~~~~~~~~~~~~~~[m[K
+[6.510s] [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/factor/solver.cpp:709:40:[m[K [01;35m[Kwarning: [m[K‘[01m[Kvoid ceres::Problem::SetParameterization(double*, ceres::LocalParameterization*)[m[K’ is deprecated: LocalParameterizations are deprecated. Use SetManifold instead. [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wdeprecated-declarations-Wdeprecated-declarations]8;;[m[K]
+[6.510s]   709 |             [01;35m[Kproblem.SetParameterization(frame_infos[i - 1]->q.data(), so3_parameterization)[m[K;
+[6.510s]       |             [01;35m[K~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[m[K
+[6.510s] In file included from [01m[K/usr/local/include/ceres/ceres.h:66[m[K,
+[6.510s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/utilies/common.h:3[m[K,
+[6.510s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/factor/factor_common.h:2[m[K,
+[6.510s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/factor/camera_factor.h:2[m[K,
+[6.510s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/factor/solver.h:2[m[K,
+[6.510s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/factor/solver.cpp:1[m[K:
+[6.510s] [01m[K/usr/local/include/ceres/problem.h:395:8:[m[K [01;36m[Knote: [m[Kdeclared here
+[6.510s]   395 |   void [01;36m[KSetParameterization[m[K(double* values,
+[6.510s]       |        [01;36m[K^~~~~~~~~~~~~~~~~~~[m[K
+[6.510s] [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/factor/solver.cpp:710:40:[m[K [01;35m[Kwarning: [m[K‘[01m[Kvoid ceres::Problem::SetParameterization(double*, ceres::LocalParameterization*)[m[K’ is deprecated: LocalParameterizations are deprecated. Use SetManifold instead. [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wdeprecated-declarations-Wdeprecated-declarations]8;;[m[K]
+[6.510s]   710 |             [01;35m[Kproblem.SetParameterization(frame_infos[i]->q.data(), so3_parameterization)[m[K;
+[6.510s]       |             [01;35m[K~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[m[K
+[6.510s] In file included from [01m[K/usr/local/include/ceres/ceres.h:66[m[K,
+[6.510s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/utilies/common.h:3[m[K,
+[6.510s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/factor/factor_common.h:2[m[K,
+[6.510s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/factor/camera_factor.h:2[m[K,
+[6.510s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/factor/solver.h:2[m[K,
+[6.511s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/factor/solver.cpp:1[m[K:
+[6.511s] [01m[K/usr/local/include/ceres/problem.h:395:8:[m[K [01;36m[Knote: [m[Kdeclared here
+[6.511s]   395 |   void [01;36m[KSetParameterization[m[K(double* values,
+[6.511s]       |        [01;36m[K^~~~~~~~~~~~~~~~~~~[m[K
+[6.511s] [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/factor/solver.cpp:721:40:[m[K [01;35m[Kwarning: [m[K‘[01m[Kvoid ceres::Problem::SetParameterization(double*, ceres::LocalParameterization*)[m[K’ is deprecated: LocalParameterizations are deprecated. Use SetManifold instead. [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wdeprecated-declarations-Wdeprecated-declarations]8;;[m[K]
+[6.511s]   721 |             [01;35m[Kproblem.SetParameterization(frame_infos[i - 1]->q.data(), so3_parameterization)[m[K;
+[6.511s]       |             [01;35m[K~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[m[K
+[6.511s] In file included from [01m[K/usr/local/include/ceres/ceres.h:66[m[K,
+[6.511s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/utilies/common.h:3[m[K,
+[6.511s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/factor/factor_common.h:2[m[K,
+[6.511s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/factor/camera_factor.h:2[m[K,
+[6.511s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/factor/solver.h:2[m[K,
+[6.511s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/factor/solver.cpp:1[m[K:
+[6.511s] [01m[K/usr/local/include/ceres/problem.h:395:8:[m[K [01;36m[Knote: [m[Kdeclared here
+[6.511s]   395 |   void [01;36m[KSetParameterization[m[K(double* values,
+[6.511s]       |        [01;36m[K^~~~~~~~~~~~~~~~~~~[m[K
+[6.511s] [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/factor/solver.cpp:722:40:[m[K [01;35m[Kwarning: [m[K‘[01m[Kvoid ceres::Problem::SetParameterization(double*, ceres::LocalParameterization*)[m[K’ is deprecated: LocalParameterizations are deprecated. Use SetManifold instead. [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wdeprecated-declarations-Wdeprecated-declarations]8;;[m[K]
+[6.511s]   722 |             [01;35m[Kproblem.SetParameterization(frame_infos[i]->q.data(), so3_parameterization)[m[K;
+[6.511s]       |             [01;35m[K~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[m[K
+[6.511s] In file included from [01m[K/usr/local/include/ceres/ceres.h:66[m[K,
+[6.511s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/utilies/common.h:3[m[K,
+[6.511s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/factor/factor_common.h:2[m[K,
+[6.511s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/factor/camera_factor.h:2[m[K,
+[6.511s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/factor/solver.h:2[m[K,
+[6.512s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/factor/solver.cpp:1[m[K:
+[6.512s] [01m[K/usr/local/include/ceres/problem.h:395:8:[m[K [01;36m[Knote: [m[Kdeclared here
+[6.512s]   395 |   void [01;36m[KSetParameterization[m[K(double* values,
+[6.512s]       |        [01;36m[K^~~~~~~~~~~~~~~~~~~[m[K
+[6.512s] [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/factor/solver.cpp:780:44:[m[K [01;35m[Kwarning: [m[K‘[01m[Kvoid ceres::Problem::SetParameterization(double*, ceres::LocalParameterization*)[m[K’ is deprecated: LocalParameterizations are deprecated. Use SetManifold instead. [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wdeprecated-declarations-Wdeprecated-declarations]8;;[m[K]
+[6.512s]   780 |                 [01;35m[Kproblem.SetParameterization(frame_ptr->q.data(), so3_parameterization)[m[K;
+[6.512s]       |                 [01;35m[K~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[m[K
+[6.512s] In file included from [01m[K/usr/local/include/ceres/ceres.h:66[m[K,
+[6.512s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/utilies/common.h:3[m[K,
+[6.512s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/factor/factor_common.h:2[m[K,
+[6.512s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/factor/camera_factor.h:2[m[K,
+[6.512s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/factor/solver.h:2[m[K,
+[6.512s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/factor/solver.cpp:1[m[K:
+[6.512s] [01m[K/usr/local/include/ceres/problem.h:395:8:[m[K [01;36m[Knote: [m[Kdeclared here
+[6.512s]   395 |   void [01;36m[KSetParameterization[m[K(double* values,
+[6.512s]       |        [01;36m[K^~~~~~~~~~~~~~~~~~~[m[K
+[19.965s] [ 75%] [32m[1mLinking CXX shared library libutilies.so[0m
+[20.427s] [ 75%] Built target utilies
+[59.189s] [ 83%] [32m[1mLinking CXX shared library libtrajectory.so[0m
+[60.682s] [ 83%] Built target trajectory
+[60.698s] [ 91%] [32mBuilding CXX object CMakeFiles/lvio_2d_node.dir/src/lvio_2d_node.cpp.o[0m
+[62.689s] In file included from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/factor/camera_factor.h:2[m[K,
+[62.689s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/trajectory/trajectory.h:2[m[K,
+[62.689s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/lvio_2d_node.cpp:9[m[K:
+[62.689s] [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/factor/factor_common.h:55:57:[m[K [01;35m[Kwarning: [m[K‘[01m[KLocalParameterization[m[K’ is deprecated: LocalParameterizations will be removed from the Ceres Solver API in version 2.2.0. Use Manifolds instead. [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wdeprecated-declarations-Wdeprecated-declarations]8;;[m[K]
+[62.689s]    55 |             static ceres::LocalParameterization *Create([01;35m[K)[m[K
+[62.689s]       |                                                         [01;35m[K^[m[K
+[62.689s] In file included from [01m[K/usr/local/include/ceres/autodiff_local_parameterization.h:39[m[K,
+[62.689s]                  from [01m[K/usr/local/include/ceres/ceres.h:39[m[K,
+[62.689s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/utilies/common.h:3[m[K,
+[62.689s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/factor/factor_common.h:2[m[K,
+[62.690s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/factor/camera_factor.h:2[m[K,
+[62.690s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/trajectory/trajectory.h:2[m[K,
+[62.690s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/lvio_2d_node.cpp:9[m[K:
+[62.690s] [01m[K/usr/local/include/ceres/local_parameterization.h:121:18:[m[K [01;36m[Knote: [m[Kdeclared here
+[62.690s]   121 |     CERES_EXPORT [01;36m[KLocalParameterization[m[K {
+[62.690s]       |                  [01;36m[K^~~~~~~~~~~~~~~~~~~~~[m[K
+[62.690s] In file included from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/factor/camera_factor.h:2[m[K,
+[62.690s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/trajectory/trajectory.h:2[m[K,
+[62.690s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/lvio_2d_node.cpp:9[m[K:
+[62.690s] [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/factor/factor_common.h:[m[K In static member function ‘[01m[Kstatic ceres::LocalParameterization* lvio_2d::factor::so3_parameterization::Create()[m[K’:
+[62.690s] [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/factor/factor_common.h:57:36:[m[K [01;35m[Kwarning: [m[K‘[01m[Ktemplate<class Functor, int kGlobalSize, int kLocalSize> class ceres::AutoDiffLocalParameterization[m[K’ is deprecated: Use AutoDiffManifold instead. [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wdeprecated-declarations-Wdeprecated-declarations]8;;[m[K]
+[62.690s]    57 |                 return (new ceres::[01;35m[KAutoDiffLocalParameterization[m[K<so3_parameterization,
+[62.690s]       |                                    [01;35m[K^~~~~~~~~~~~~~~~~~~~~~~~~~~~~[m[K
+[62.690s] In file included from [01m[K/usr/local/include/ceres/ceres.h:39[m[K,
+[62.690s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/utilies/common.h:3[m[K,
+[62.690s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/factor/factor_common.h:2[m[K,
+[62.690s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/factor/camera_factor.h:2[m[K,
+[62.690s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/trajectory/trajectory.h:2[m[K,
+[62.690s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/lvio_2d_node.cpp:9[m[K:
+[62.690s] [01m[K/usr/local/include/ceres/autodiff_local_parameterization.h:114:5:[m[K [01;36m[Knote: [m[Kdeclared here
+[62.690s]   114 |     [01;36m[KAutoDiffLocalParameterization[m[K : public LocalParameterization {
+[62.690s]       |     [01;36m[K^~~~~~~~~~~~~~~~~~~~~~~~~~~~~[m[K
+[62.693s] In file included from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/factor/camera_factor.h:2[m[K,
+[62.693s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/trajectory/trajectory.h:2[m[K,
+[62.693s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/lvio_2d_node.cpp:9[m[K:
+[62.693s] [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/factor/factor_common.h:[m[K At global scope:
+[62.693s] [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/factor/factor_common.h:77:57:[m[K [01;35m[Kwarning: [m[K‘[01m[KLocalParameterization[m[K’ is deprecated: LocalParameterizations will be removed from the Ceres Solver API in version 2.2.0. Use Manifolds instead. [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wdeprecated-declarations-Wdeprecated-declarations]8;;[m[K]
+[62.693s]    77 |             static ceres::LocalParameterization *Create([01;35m[K)[m[K
+[62.693s]       |                                                         [01;35m[K^[m[K
+[62.693s] In file included from [01m[K/usr/local/include/ceres/autodiff_local_parameterization.h:39[m[K,
+[62.693s]                  from [01m[K/usr/local/include/ceres/ceres.h:39[m[K,
+[62.693s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/utilies/common.h:3[m[K,
+[62.693s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/factor/factor_common.h:2[m[K,
+[62.694s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/factor/camera_factor.h:2[m[K,
+[62.694s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/trajectory/trajectory.h:2[m[K,
+[62.694s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/lvio_2d_node.cpp:9[m[K:
+[62.694s] [01m[K/usr/local/include/ceres/local_parameterization.h:121:18:[m[K [01;36m[Knote: [m[Kdeclared here
+[62.694s]   121 |     CERES_EXPORT [01;36m[KLocalParameterization[m[K {
+[62.694s]       |                  [01;36m[K^~~~~~~~~~~~~~~~~~~~~[m[K
+[62.694s] In file included from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/factor/camera_factor.h:2[m[K,
+[62.694s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/trajectory/trajectory.h:2[m[K,
+[62.694s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/lvio_2d_node.cpp:9[m[K:
+[62.694s] [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/factor/factor_common.h:[m[K In static member function ‘[01m[Kstatic ceres::LocalParameterization* lvio_2d::factor::g_parameterization::Create()[m[K’:
+[62.694s] [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/factor/factor_common.h:79:36:[m[K [01;35m[Kwarning: [m[K‘[01m[Ktemplate<class Functor, int kGlobalSize, int kLocalSize> class ceres::AutoDiffLocalParameterization[m[K’ is deprecated: Use AutoDiffManifold instead. [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wdeprecated-declarations-Wdeprecated-declarations]8;;[m[K]
+[62.694s]    79 |                 return (new ceres::[01;35m[KAutoDiffLocalParameterization[m[K<g_parameterization,
+[62.694s]       |                                    [01;35m[K^~~~~~~~~~~~~~~~~~~~~~~~~~~~~[m[K
+[62.694s] In file included from [01m[K/usr/local/include/ceres/ceres.h:39[m[K,
+[62.694s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/utilies/common.h:3[m[K,
+[62.694s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/factor/factor_common.h:2[m[K,
+[62.694s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/factor/camera_factor.h:2[m[K,
+[62.694s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/trajectory/trajectory.h:2[m[K,
+[62.694s]                  from [01m[K/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/src/lvio_2d_node.cpp:9[m[K:
+[62.694s] [01m[K/usr/local/include/ceres/autodiff_local_parameterization.h:114:5:[m[K [01;36m[Knote: [m[Kdeclared here
+[62.694s]   114 |     [01;36m[KAutoDiffLocalParameterization[m[K : public LocalParameterization {
+[62.694s]       |     [01;36m[K^~~~~~~~~~~~~~~~~~~~~~~~~~~~~[m[K
+[92.240s] [100%] [32m[1mLinking CXX executable lvio_2d_node[0m
+[92.372s] /usr/bin/ld: warning: libopencv_core.so.4.5d, needed by /opt/ros/humble/lib/libcv_bridge.so, may conflict with libopencv_core.so.408
+[93.141s] [100%] Built target lvio_2d_node
+[93.148s] Invoked command in '/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/build/lvio_2d' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/ubuntu/ros2_tb4_ws/install/turtlebot4_tests:/home/ubuntu/ros2_tb4_ws/install/turtlebot4_python_tutorials:/home/ubuntu/ros2_tb4_ws/install/turtlebot4_openai_tutorials:/home/ubuntu/ros2_tb4_ws/install/turtlebot4_diagnostics:/opt/ros/humble /usr/bin/cmake --build /home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/build/lvio_2d -- -j20 -l20
+[93.155s] Invoking command in '/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/build/lvio_2d': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/ubuntu/ros2_tb4_ws/install/turtlebot4_tests:/home/ubuntu/ros2_tb4_ws/install/turtlebot4_python_tutorials:/home/ubuntu/ros2_tb4_ws/install/turtlebot4_openai_tutorials:/home/ubuntu/ros2_tb4_ws/install/turtlebot4_diagnostics:/opt/ros/humble /usr/bin/cmake --install /home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/build/lvio_2d
+[93.161s] -- Install configuration: ""
+[93.162s] -- Installing: /home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/install/lvio_2d/lib/lvio_2d/lvio_2d_node
+[93.188s] -- Set runtime path of "/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/install/lvio_2d/lib/lvio_2d/lvio_2d_node" to ""
+[93.188s] -- Installing: /home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/install/lvio_2d/lib/lvio_2d/libutilies.so
+[93.205s] -- Set runtime path of "/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/install/lvio_2d/lib/lvio_2d/libutilies.so" to ""
+[93.205s] -- Installing: /home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/install/lvio_2d/lib/lvio_2d/libtrajectory.so
+[93.264s] -- Set runtime path of "/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/install/lvio_2d/lib/lvio_2d/libtrajectory.so" to ""
+[93.264s] -- Installing: /home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/install/lvio_2d/share/lvio_2d/launch
+[93.264s] -- Installing: /home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/install/lvio_2d/share/lvio_2d/launch/lvio_2d.launch.py
+[93.264s] -- Installing: /home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/install/lvio_2d/share/lvio_2d/launch/lvio_2d_office.launch
+[93.264s] -- Installing: /home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/install/lvio_2d/share/lvio_2d/launch/lvio_2d_market.launch
+[93.264s] -- Installing: /home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/install/lvio_2d/share/lvio_2d/launch/lvio_2d.launch
+[93.264s] -- Installing: /home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/install/lvio_2d/share/lvio_2d/launch/lvio_2d_cafe.launch
+[93.264s] -- Installing: /home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/install/lvio_2d/share/lvio_2d/launch/lvio_2d_corridor.launch
+[93.264s] -- Installing: /home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/install/lvio_2d/share/lvio_2d/launch/display.rviz
+[93.264s] -- Installing: /home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/install/lvio_2d/share/lvio_2d/config
+[93.264s] -- Installing: /home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/install/lvio_2d/share/lvio_2d/config/office.yaml
+[93.265s] -- Installing: /home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/install/lvio_2d/share/lvio_2d/config/cafe.yaml
+[93.265s] -- Installing: /home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/install/lvio_2d/share/lvio_2d/config/corridor.yaml
+[93.265s] -- Installing: /home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/install/lvio_2d/share/lvio_2d/config/params.yaml
+[93.265s] -- Installing: /home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/install/lvio_2d/share/lvio_2d/config/ros2_params.yaml
+[93.265s] -- Installing: /home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/install/lvio_2d/share/ament_index/resource_index/package_run_dependencies/lvio_2d
+[93.265s] -- Installing: /home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/install/lvio_2d/share/ament_index/resource_index/parent_prefix_path/lvio_2d
+[93.265s] -- Installing: /home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/install/lvio_2d/share/lvio_2d/environment/ament_prefix_path.sh
+[93.265s] -- Installing: /home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/install/lvio_2d/share/lvio_2d/environment/ament_prefix_path.dsv
+[93.265s] -- Installing: /home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/install/lvio_2d/share/lvio_2d/environment/path.sh
+[93.265s] -- Installing: /home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/install/lvio_2d/share/lvio_2d/environment/path.dsv
+[93.265s] -- Installing: /home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/install/lvio_2d/share/lvio_2d/local_setup.bash
+[93.265s] -- Installing: /home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/install/lvio_2d/share/lvio_2d/local_setup.sh
+[93.265s] -- Installing: /home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/install/lvio_2d/share/lvio_2d/local_setup.zsh
+[93.265s] -- Installing: /home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/install/lvio_2d/share/lvio_2d/local_setup.dsv
+[93.265s] -- Installing: /home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/install/lvio_2d/share/lvio_2d/package.dsv
+[93.265s] -- Installing: /home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/install/lvio_2d/share/ament_index/resource_index/packages/lvio_2d
+[93.265s] -- Installing: /home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/install/lvio_2d/share/lvio_2d/cmake/lvio_2dConfig.cmake
+[93.265s] -- Installing: /home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/install/lvio_2d/share/lvio_2d/cmake/lvio_2dConfig-version.cmake
+[93.265s] -- Installing: /home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/install/lvio_2d/share/lvio_2d/package.xml
+[93.267s] Invoked command in '/home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/build/lvio_2d' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/ubuntu/ros2_tb4_ws/install/turtlebot4_tests:/home/ubuntu/ros2_tb4_ws/install/turtlebot4_python_tutorials:/home/ubuntu/ros2_tb4_ws/install/turtlebot4_openai_tutorials:/home/ubuntu/ros2_tb4_ws/install/turtlebot4_diagnostics:/opt/ros/humble /usr/bin/cmake --install /home/ubuntu/workspaces/2DLIW_ws/src/2DLIW-SLAM/build/lvio_2d
