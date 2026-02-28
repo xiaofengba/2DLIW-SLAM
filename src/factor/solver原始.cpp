@@ -137,26 +137,24 @@ namespace lvio_2d
             problem.SetParameterization(frame_infos[i]->q.data(), so3_parameterization);
         }
 
-        // ground factor (【修复】消除双层嵌套循环，加入参数判断)
+        // ground factor
+
         for (int i = 0; i < frame_infos.size(); i++)
         {
-            if (PARAM(use_ground_p_factor))
+            for (int j = 0; j < frame_infos.size(); j++)
             {
                 ceres::CostFunction *ground_p_cost_function = ground_factor_p::Create();
                 problem.AddResidualBlock(
                     ground_p_cost_function, loss_function,
-                    frame_infos[i]->p.data(),
-                    frame_infos[i]->q.data());
-            }
+                    frame_infos[j]->p.data(),
+                    frame_infos[j]->q.data());
 
-            if (PARAM(use_ground_q_factor))
-            {
                 ceres::CostFunction *ground_q_cost_function = ground_factor_q::Create();
                 problem.AddResidualBlock(
                     ground_q_cost_function, loss_function,
-                    frame_infos[i]->p.data(),
-                    frame_infos[i]->q.data());
-                problem.SetParameterization(frame_infos[i]->q.data(), so3_parameterization);
+                    frame_infos[j]->p.data(),
+                    frame_infos[j]->q.data());
+                problem.SetParameterization(frame_infos[j]->q.data(), so3_parameterization);
             }
         }
 
@@ -302,12 +300,9 @@ namespace lvio_2d
             if (i > 0) // wheel
                 current_res_index += 3;
 
-            // ground (【修复】消除灾难级的空间分配爆炸，仅分配需要的约束维度)
+            // ground
             all_status_block_indexs[i].ground_res_index = current_res_index;
-            if (PARAM(use_ground_p_factor))
-                current_res_index += 1;
-            if (PARAM(use_ground_q_factor))
-                current_res_index += 1;
+            current_res_index += n * 2;
         }
 
         world_point_indexs.clear();
@@ -546,45 +541,47 @@ namespace lvio_2d
         }
         assert(r_index == all_status_block_indexs[index].ground_res_index);
 
-        // ground factor (【修复】消除多余循环，直接针对当前 index 帧处理雅可比，并严格遵守 YAML 开关)
+        // ground factor
 
-        if (PARAM(use_ground_p_factor))
+        for (int j = 0; j < frame_infos.size(); j++)
         {
-            ground_factor_p *functor = new ground_factor_p;
-            std::vector<double *> parametrs = {frame_infos[index]->p.data(),
-                                               frame_infos[index]->q.data()};
+            // p
+            {
+                ground_factor_p *functor = new ground_factor_p;
+                std::vector<double *> parametrs = {frame_infos[j]->p.data(),
+                                                   frame_infos[j]->q.data()};
 
-            Eigen::Matrix<double, 1, 1> res;
-            std::vector<auto_diff::rMatrix> jacobians;
-            auto_diff::compute_res_and_jacobi<ground_factor_p, 1, 3, 3>(functor, parametrs, res, jacobians);
-            for (int l = 0; l < 2; l++)
-                assert(BUG::maxtirx_is_valid(jacobians[l]));
-            assert(BUG::maxtirx_is_valid(res));
+                Eigen::Matrix<double, 1, 1> res;
+                std::vector<auto_diff::rMatrix> jacobians;
+                auto_diff::compute_res_and_jacobi<ground_factor_p, 1, 3, 3>(functor, parametrs, res, jacobians);
+                for (int l = 0; l < 2; l++)
+                    assert(BUG::maxtirx_is_valid(jacobians[l]));
+                assert(BUG::maxtirx_is_valid(res));
 
-            J.template block<1, alpha_len>(r_index, all_status_block_indexs[index].p) = jacobians[0];
-            J.template block<1, gamma_len>(r_index, all_status_block_indexs[index].q) = jacobians[1];
+                J.template block<1, alpha_len>(r_index, all_status_block_indexs[j].p) = jacobians[0];
+                J.template block<1, gamma_len>(r_index, all_status_block_indexs[j].q) = jacobians[1];
 
-            R.template block<1, 1>(r_index, 0) = res;
+                R.template block<1, 1>(r_index, 0) = res;
+            }
             r_index++;
-        }
-        
-        if (PARAM(use_ground_q_factor))
-        {
-            ground_factor_q *functor = new ground_factor_q;
-            std::vector<double *> parametrs = {frame_infos[index]->p.data(),
-                                               frame_infos[index]->q.data()};
+            // q
+            {
+                ground_factor_q *functor = new ground_factor_q;
+                std::vector<double *> parametrs = {frame_infos[j]->p.data(),
+                                                   frame_infos[j]->q.data()};
 
-            Eigen::Matrix<double, 1, 1> res;
-            std::vector<auto_diff::rMatrix> jacobians;
-            auto_diff::compute_res_and_jacobi<ground_factor_q, 1, 3, 3>(functor, parametrs, res, jacobians);
-            for (int l = 0; l < 2; l++)
-                assert(BUG::maxtirx_is_valid(jacobians[l]));
-            assert(BUG::maxtirx_is_valid(res));
+                Eigen::Matrix<double, 1, 1> res;
+                std::vector<auto_diff::rMatrix> jacobians;
+                auto_diff::compute_res_and_jacobi<ground_factor_q, 1, 3, 3>(functor, parametrs, res, jacobians);
+                for (int l = 0; l < 2; l++)
+                    assert(BUG::maxtirx_is_valid(jacobians[l]));
+                assert(BUG::maxtirx_is_valid(res));
 
-            J.template block<1, alpha_len>(r_index, all_status_block_indexs[index].p) = jacobians[0];
-            J.template block<1, gamma_len>(r_index, all_status_block_indexs[index].q) = jacobians[1];
+                J.template block<1, alpha_len>(r_index, all_status_block_indexs[j].p) = jacobians[0];
+                J.template block<1, gamma_len>(r_index, all_status_block_indexs[j].q) = jacobians[1];
 
-            R.template block<1, 1>(r_index, 0) = res;
+                R.template block<1, 1>(r_index, 0) = res;
+            }
             r_index++;
         }
 
@@ -729,29 +726,25 @@ namespace lvio_2d
             problem.SetParameterization(frame_infos[i]->q.data(), so3_parameterization);
         }
 
-        // ground factor (【修复】消除双层嵌套循环，加入参数判断，添加正确参数化)
-        for (int j = 0; j < frame_infos.size(); j++)
+        // ground factor
+
+        // for (int i = 0; i < frame_infos.size(); i++)
         {
-            if (PARAM(use_ground_p_factor))
+            for (int j = 0; j < frame_infos.size(); j++)
             {
                 ceres::CostFunction *ground_p_cost_function = ground_factor_p::Create();
                 problem.AddResidualBlock(
                     ground_p_cost_function, loss_function,
                     frame_infos[j]->p.data(),
                     frame_infos[j]->q.data());
-            }
 
-            if (PARAM(use_ground_q_factor))
-            {
                 ceres::CostFunction *ground_q_cost_function = ground_factor_q::Create();
                 problem.AddResidualBlock(
                     ground_q_cost_function, loss_function,
                     frame_infos[j]->p.data(),
                     frame_infos[j]->q.data());
-                problem.SetParameterization(frame_infos[j]->q.data(), so3_parameterization);
             }
         }
-        
         if (!PARAM(fast_mode))
             if (has_linearized_block)
             {

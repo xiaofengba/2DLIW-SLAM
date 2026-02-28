@@ -3,6 +3,20 @@
 #include "utilies/visualization.h"
 #include <rclcpp/rclcpp.hpp> // 【新增】引入 ROS 2 核心库以使用日志系统
 
+
+/*
+    原则：高频累加，低频触发优化
+    输入：在上一级的 dispatch_queue 中，不同传感器的数据被按时间戳严格排好了序。
+    高频：当传入的数据是高频的 IMU 或 轮式里程计（通常 100Hz~200Hz）时，系统不会立刻去计算位置，而是把它们存起来“预积分”。
+        直接调用 imu_preintegraption_.add_imu_measure() 和 wheel_odom_preintegration_.add_wheel_odom_measure()。
+    低频：激光雷达（Laser）或相机（Camera）的数据频率较低（通常 10Hz~30Hz）。只要它们一到来，就会立刻触发整个系统的状态更新和融合。
+        以激光数据 add_sensor_data(sensor::laser) 为例，中间经历了以下处理：
+    
+    融合：
+        代码中执行了 frame_info::create(...)。它把刚才推算的当前位姿预积分结果、轮式里程计预积分结果、以及激光/视觉的匹配结果，全部打包成一个大包裹，塞进 frame_infos 这个双端队列（滑动窗口）里。
+        核心融合引擎 (do_tracking)：系统使用了 Ceres Solver 构建了一个复杂的非线性优化问题
+*/
+
 static bool is_static(const Eigen::Isometry3d &delta_tf,
                       const double &p_motion_threshold,
                       const double &q_motion_threshold)
@@ -67,12 +81,15 @@ namespace lvio_2d
             o_fstream << std::setprecision(10);
         }
     }
+
+    // 轮子的输入函数，直接预积分
     void trajectory::add_sensor_data(sensor::wheel_odom::u_ptr &wheel_odom_data_ptr)
     {
         double time = wheel_odom_data_ptr->time_stamp;
         if (wheel_odom_preintegration_.add_wheel_odom_measure(wheel_odom_data_ptr))
             wheel_odom_inited = true;
     }
+    // IMU的输入函数，直接预积分
     void trajectory::add_sensor_data(sensor::imu::u_ptr &imu_data_ptr)
     {
         double time = imu_data_ptr->time_stamp;
@@ -135,8 +152,10 @@ namespace lvio_2d
         last_time = current_time;
     }
 
+    // laser scan的输入，顺便处理预积分
     void trajectory::add_sensor_data(sensor::laser::u_ptr &laser_data_ptr)
     {
+        // 运动去畸变 (Motion Deskewing)
         double time = laser_data_ptr->time_stamp;
         if (status == TRACKING)
         {
@@ -160,6 +179,7 @@ namespace lvio_2d
             RCLCPP_WARN(rclcpp::get_logger("trajectory"), "abort laser msg.wait for wheel odom init.");
             return;
         }
+
         auto wheel_result_filter = wheel_odom_preintegration_.get_preintegraption_result();
         auto laser_delta_filter = wheel_delta_to_laser_delta(wheel_result_filter->delta_Tij);
 
@@ -181,6 +201,7 @@ namespace lvio_2d
 
         auto wheel_result = wheel_odom_preintegration_.get_preintegraption_result();
         auto imu_reuslt = imu_preintegraption_.get_preintegraption_result();
+
         wheel_odom_preintegration_.reset_wheel_odom_measure(time);
         imu_preintegraption_.reset_imu_measure(time,
                                                current_bs.block<3, 1>(0, 0),
@@ -189,13 +210,17 @@ namespace lvio_2d
         current_angular_local = imu_reuslt->X.block<3, 1>(gamma_index, 0) /
                                 imu_reuslt->Dt;
 
+        // 基于IMU的位置，通过轮子计算先验
         Eigen::Isometry3d delta_tf = wheel_delta_to_imu_delta(wheel_result->delta_Tij);
 
         // 获取当前的角速度
         update_current_status(delta_tf, time);
 
+
+        // 特征提取与局部匹配 (Feature Extraction & Matching)
         recorder.begin_record();
-        auto scan_ptr = laser_manger_.spawn_scan(laser_data_ptr);
+        // 分析当前扫描的角点和交点、线段
+        auto scan_ptr = laser_manger_.spawn_scan(laser_data_ptr);   
         recorder.end_record("spawn_scan");
 
         recorder.add_record("lines each frame", scan_ptr->lines.size());
@@ -208,11 +233,14 @@ namespace lvio_2d
         }
         else
         {
+            // 执行匹配
             // laser_match = laser_manger_.match_with_back(scan_ptr, current_p, current_q);
             recorder.begin_record();
             laser_match = laser_manger_.match_with_ref(scan_ptr, current_p, current_q);
             recorder.end_record("match_line");
         }
+
+        // 创建观测帧
         auto current_frame = frame_info::create(current_time,
                                                 current_p,
                                                 current_q,
@@ -221,11 +249,14 @@ namespace lvio_2d
                                                 imu_reuslt,
                                                 wheel_result);
         current_frame->add_laser_match(laser_match);
+
+        // 如果匹配成功
         if (laser_match)
         {
             if (PARAM(enable_laser_vis))
                 visualization::get_ptr()->add_scan_to_show(laser_match->scan2);
         }
+
         assert(current_frame->type == frame_info::laser);
         last_laser_index = current_index;
         frame_infos.push_back(current_frame);
@@ -237,7 +268,8 @@ namespace lvio_2d
             }
             return;
         }
-
+        
+        // 👉 就是这里！正式进入前端图优化环节
         do_tracking();
         {
             Eigen::Isometry3d tf_w_l = lie::make_tf(current_p, current_q) * PARAM(T_imu_to_laser);
@@ -247,6 +279,7 @@ namespace lvio_2d
         if (PARAM(enable_laser_vis))
             visualization::get_ptr()->add_laser_match_to_show(laser_match);
 
+        // 角点累加与关键帧判别 (Keyframe Selection)
         Eigen::Isometry3d current_laser_tf = lie::make_tf(current_p, current_q) * PARAM(T_imu_to_laser);
         Eigen::Isometry3d delta_laser_tf = last_keyframe_tf.inverse() * current_laser_tf;
 
@@ -279,6 +312,7 @@ namespace lvio_2d
         return;
     }
 
+    // 这个函数基本没有使用
     void trajectory::add_sensor_data(sensor::camera::u_ptr &camera_image_ptr)
     {
         double time = camera_image_ptr->time_stamp;
@@ -534,11 +568,17 @@ namespace lvio_2d
             return;
 
         static double last_outpu_time = TIME_MIN;
+        // 1. 【准备阶段】对视觉特征点进行三角化估计初值（如果没有开启视觉，这步基本跳过）
         estimate_features(false);
         recorder.begin_record();
+
+        // 2. 🌟【核心优化入口】调用 solver 类中的 Ceres 求解器
+        // 把滑动窗口内的所有帧 (frame_infos) 和特征点 (feature_manger_) 丢进去算
         opt_solver.solve(frame_infos, feature_manger_);
         recorder.end_record("solve");
 
+        // 3. 【更新状态】Ceres 算完后，最新的精确结果已经存在滑动窗口的最后一帧里了
+        // 把它们提取出来，更新为系统的当前状态，给下一帧做预测用
         current_p = frame_infos.back()->p;
         current_q = frame_infos.back()->q;
         current_v = frame_infos.back()->v;
@@ -546,8 +586,12 @@ namespace lvio_2d
 
         filter_outlier_world_point();
         recorder.begin_record();
+
+        // 5. 🌟【边缘化与滑窗】为了控制计算量，把最老的一帧变成先验矩阵（Prior Factor）
         opt_solver.marginalization(frame_infos, feature_manger_);
         recorder.end_record("marginalization");
+        
+        // 把被边缘化的最老帧从窗口中弹出去，如果是关键帧就丢给后端的 keyframe_manager
         pop_frame_for_tracking();
 
         // output

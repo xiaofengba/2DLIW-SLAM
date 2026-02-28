@@ -8,7 +8,7 @@ def generate_launch_description():
     lvio_2d_share_dir = get_package_share_directory('lvio_2d')
 
     # 定义配置文件的绝对路径
-    config_file = os.path.join(lvio_2d_share_dir, 'config', 'ros2_params.yaml')
+    config_file = os.path.join(lvio_2d_share_dir, 'config', 'konka.yaml')
     rviz_config_file = os.path.join(lvio_2d_share_dir, 'launch', 'display.rviz')
 
     # 定义主节点 (lvio_2d_node)

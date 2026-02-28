@@ -65,26 +65,19 @@ namespace lvio_2d
             using vector6 = Eigen::Matrix<T, 6, 1>;
             using matrix3 = Eigen::Matrix<T, 3, 3>;
 
-            // 1. 获取 IMU 到世界坐标系的变换
             Eigen::Transform<T, 3, Eigen::Isometry> tf_w_i = lie::make_tf<T>(
                 Eigen::Map<const Eigen::Matrix<T, 3, 1>>(p_w_i),
                 Eigen::Map<const Eigen::Matrix<T, 3, 1>>(theta_w_i));
 
-            // 2. 获取底盘（轮式里程计）到世界坐标系的变换
             Eigen::Transform<T, 3, Eigen::Isometry> T_i_w = PARAM(T_imu_to_wheel).template cast<T>();
+
             Eigen::Transform<T, 3, Eigen::Isometry> tf_w_o = tf_w_i * T_i_w;
 
-            // 3. 提取底盘坐标系的 Z 轴在世界坐标系下的朝向
+            vector3 ABC(T(0), T(0), T(1));
             vector3 z_axis = tf_w_o.matrix().template block<3, 1>(0, 2);
-            
-            // 4. 【核心修复】计算倾斜度，避开 norm() 的求导奇点
-            // 机器人的 Z 轴向量为 [x, y, z]。当机器人未倾斜时，x 和 y 应当为 0。
-            // 倾斜角度的 sin 值刚好等于 sqrt(x^2 + y^2)。
-            // 加上 1e-12（极其微小的值），防止在完美平贴地面时 sqrt(0) 引发导数除零错误。
-            T tilt_squared = z_axis(0) * z_axis(0) + z_axis(1) * z_axis(1);
-            T safe_angle_approx = ceres::sqrt(tilt_squared + T(1e-12));
-
-            res[0] = T(ground_noise::get_ground_noise()->manifold_q_sqrt_info) * safe_angle_approx;
+            T sinn = z_axis.cross(ABC).norm();
+            T angle = ceres::asin(sinn);
+            res[0] = T(ground_noise::get_ground_noise()->manifold_q_sqrt_info) * angle;
             return true;
         }
         static ceres::CostFunction *Create()

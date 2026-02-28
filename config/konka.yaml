@@ -1,0 +1,115 @@
+lvio_2d_node:
+  ros__parameters:
+    laser_topic: "/scan"
+    wheel_odom_topic: "/wheel_odom"
+    imu_topic: "/wit_imu/data_raw"
+    camera_topic: "/head_camera/color/image_raw" # antything you want
+
+    enable_camera: false    #awaly false
+    enable_laser: true      
+    enable_camera_vis: true #awaly true
+    enable_laser_vis: true
+
+    T_imu_to_wheel: [ 1.000000    ,   0.000000    ,   0.000000    ,   -0.022600   ,
+                       0.000000    ,   1.000000    ,   0.000000    ,   -0.041000   ,
+                       0.000000    ,   0.000000    ,   1.000000    ,   0.015000    ,
+                       0.000000    ,   0.000000    ,   0.000000    ,   1.000000 ]
+
+    #no estimate
+    #read from camera
+    T_imu_to_camera: [ 0.565728    ,   0.091200    ,   0.819533    ,   -0.282950   ,
+                       0.208483    ,   -0.977394   ,   -0.035150   ,   0.130240    ,
+                       0.797801    ,   0.190743    ,   -0.571953   ,   1.375300    ,
+                       0.000000    ,   0.000000    ,   0.000000    ,   1.000000 ]
+
+    #no estimate
+    #estimated by lidar_wheel_calibration
+    T_imu_to_laser: [ -1.000000   ,   -0.000000   ,   0.000000    ,   -0.229600   ,
+                       0.000000    ,   -1.000000   ,   0.000000    ,   -0.126100   ,
+                       0.000000    ,   0.000000    ,   1.000000    ,   0.184000    ,
+                       0.000000    ,   0.000000    ,   0.000000    ,   1.000000 ]
+
+    camera_K: [ 455.66 , 0.0     , 324.146 ,
+                0.0    , 455.086 , 181.557 ,
+                0.0    , 0.0     , 1.0     ]
+
+    FPS: 40
+
+    g: 9.8
+
+    #noise
+    #each second
+    imu_noise_acc_sigma: [ 0.0163  ,0.0163  , 0.0163  ]
+    imu_bias_acc_sigma:  [ 0.00499 , 0.00499  , 0.00499 ]
+    imu_noise_gyro_sigma: [ 0.003208 , 0.003208   , 0.003208  ]
+    imu_bias_gyro_sigma:  [ 0.000499 , 0.000499  , 0.000499 ]
+
+    #per meter
+    # len dir yaw
+    wheel_sigma: [0.1 , 99999.0 , 999.99]
+
+    #each pixel
+    camera_sigma: [ 20.0, 20.0 ]
+    max_camera_reproject_error: 20.0  # 【修改】从 20 改为了 20.0，防止强类型报错
+    max_camera_feature_dis: 50.0
+
+    #manifold noise
+    manifold_p_sigma: 0.01    #m
+    #manifold_q_sigma: 0.00001    #rad
+    manifold_q_sigma: 0.001    #rad
+
+    #tracking
+    max_feature_num: 5
+    feature_min_dis: 50.0
+
+    #Initialization parameters
+    slide_window_size : 10
+    p_motion_threshold : 0.1
+    q_motion_threshold : 0.05
+
+    #laser parameters
+    w_laser_each_scan: 100.0
+    h_laser_each_scan: 100.0
+    laser_resolution: 0.05 
+
+    #meter
+    line_continuous_threshold: 0.1
+    line_min_len: 0.05
+    line_max_dis: 0.03
+
+    #degree
+    line_max_tolerance_angle: 175.0
+    line_to_line_sigma: 0.001
+
+    #keyfram param
+    key_frame_p_motion_threshold : 0.1
+    key_frame_q_motion_threshold : 0.1
+
+    #laser loop
+    a_res: 0.05  
+    d_res: 0.05
+    submap_count: 10
+    laser_loop_min_match_threshold: 8
+    loop_detect_min_interval: 100
+    verify_loop_rate: 0.5
+    loop_max_dis: 999.0
+    loop_edge_k: 10.0
+    loop_max_tf_p: 999.0
+    loop_max_tf_q: 999.0
+
+    loop_sigma_p: [0.01, 0.01, 0.01]
+    loop_sigma_q: [0.001, 0.001, 0.001]
+
+    #backend
+    use_ground_p_factor: true
+    use_ground_q_factor: true
+
+    #front end
+    ref_motion_filter_p: 0.01
+    ref_motion_filter_q: 0.01
+    ref_n_accumulation: 2
+    fast_mode: true
+
+    #ouput
+    output_tum: false
+    output_dir: "/dev/null/"

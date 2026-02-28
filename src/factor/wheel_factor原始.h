@@ -17,6 +17,8 @@ namespace lvio_2d
                         T *res) const
         {
             using vector3 = Eigen::Matrix<T, 3, 1>;
+            using vector6 = Eigen::Matrix<T, 6, 1>;
+            using matrix3 = Eigen::Matrix<T, 3, 3>;
 
             const Eigen::Map<const vector3> pi(p_w_i);
             const Eigen::Map<const vector3> thetai(theta_w_i);
@@ -31,30 +33,41 @@ namespace lvio_2d
 
             Eigen::Transform<T, 3, Eigen::Isometry> w_tf_ij = tf_i.inverse() * tf_j;
 
-            // 提取当前优化的相对位姿 (p, q) 和 里程计预积分的测量位姿 (op, oq)
             auto [p, q] = lie::log_SE3(w_tf_ij);
             auto [op, oq] = lie::log_SE3<T>(wheel_odom_preint_result_->delta_Tij.cast<T>());
 
-            // 【修复 1：安全的长度计算】
-            // 在根号内加上极小值 1e-12，防止机器人静止时导数分母为 0 导致 NaN
-            T len = ceres::sqrt(p(0) * p(0) + p(1) * p(1) + T(1e-12));
-            T o_len = ceres::sqrt(op(0) * op(0) + op(1) * op(1) + T(1e-12));
+            T o_len = ceres::sqrt(op(0) * op(0) + op(1) * op(1));
+            T len = ceres::sqrt(p(0) * p(0) + p(1) * p(1));
 
-            // 【修复 2：安全的方向误差计算】
-            // 利用二维叉积公式直接求夹角的 sin 值，避开 norm() 和 asin() 的双重奇异点
-            T cross_z = p(0) * op(1) - p(1) * op(0);
-            T safe_denom = len * o_len;
-            T angle_sin = cross_z / safe_denom;
+            vector3 o_dir(op(0), op(1), T(0));
+            vector3 dir(p(0), p(1), T(0));
+            T angle = T(0);
+            if (o_dir.norm() > T(0.0001) && dir.norm() > T(0.0001))
+            {
+                o_dir.normalize();
+                dir.normalize();
 
-            // 组装残差 0：移动距离误差
-            res[0] = T(wheel_odom_preint_result_->sqrt_inverse_P(0, 0)) * (len - o_len);
-            
-            // 组装残差 1：移动方向误差
-            res[1] = T(wheel_odom_preint_result_->sqrt_inverse_P(1, 1)) * angle_sin;
-            
-            // 【修复 3：修复严重逻辑 Bug，恢复旋转符号】
-            // 在 2D 中，旋转完全集中在 Z 轴。直接作差，不再使用丢失符号的 norm()！
-            res[2] = T(wheel_odom_preint_result_->sqrt_inverse_P(2, 2)) * (q(2) - oq(2));
+                T sinn = o_dir.cross(dir).norm();
+                angle = ceres::asin(sinn);
+            }
+            else
+            {
+                angle = dir.norm();
+            }
+
+            if (len < T(0.0001) || o_len < T(0.0001))
+                res[0] = T(wheel_odom_preint_result_->sqrt_inverse_P(0, 0)) * len;
+            else
+                res[0] = T(wheel_odom_preint_result_->sqrt_inverse_P(0, 0)) * (o_len - len);
+            res[1] = T(wheel_odom_preint_result_->sqrt_inverse_P(1, 1)) * (angle);
+            if (q.norm() < T(0.001) || oq.norm() < T(0.001))
+            {
+                res[2] = T(wheel_odom_preint_result_->sqrt_inverse_P(2, 2)) * q.norm();
+            }
+            else
+            {
+                res[2] = T(wheel_odom_preint_result_->sqrt_inverse_P(2, 2)) * (oq.norm() - q.norm());
+            }
 
             return true;
         }
